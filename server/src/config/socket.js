@@ -3,40 +3,33 @@ import Ride from '../models/Ride.js';
 import User from '../models/User.js';
 
 export const initSocket = (io) => {
-  // JWT auth for sockets — prefers verified token, falls back to legacy userId/role during transition
-  io.use(async (socket, next) => {
-    try {
-      const token = socket.handshake.auth?.token || socket.handshake.headers?.authorization?.replace('Bearer ', '');
-      if (token) {
-        const payload = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
-        const user = await User.findById(payload.id).select('role isSuspended tokenVersion');
-        if (!user || user.isSuspended || user.tokenVersion !== payload.v) return next(new Error('UNAUTHORIZED'));
-        socket.userId = String(user._id);
-        socket.role = user.role;
-        socket.tokenPayload = payload;
-        return next();
+  // JWT auth for sockets — a verified access token is required to act as a
+    // specific user. Sockets without a token stay anonymous (public pages) and
+    // can never join user/ride rooms or emit locations.
+    io.use(async (socket, next) => {
+      try {
+        const token = socket.handshake.auth?.token || socket.handshake.headers?.authorization?.replace('Bearer ', '');
+        if (token) {
+          const payload = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+          const user = await User.findById(payload.id).select('role isSuspended tokenVersion');
+          if (!user || user.isSuspended || user.tokenVersion !== payload.v) return next(new Error('UNAUTHORIZED'));
+          socket.userId = String(user._id);
+          socket.role = user.role;
+          socket.tokenPayload = payload;
+          return next();
+        }
+        return next(); // anon for public pages
+      } catch {
+        return next(new Error('UNAUTHORIZED'));
       }
-      // Legacy fallback: allow userId/role sent by older clients (less secure, but keeps dispatch working)
-      const { userId, role } = socket.handshake.auth || {};
-      if (userId) {
-        const user = await User.findById(userId).select('role isSuspended');
-        if (!user || user.isSuspended) return next(new Error('UNAUTHORIZED'));
-        socket.userId = String(user._id);
-        socket.role = role || user.role;
-        return next();
-      }
-      return next(); // anon for public pages
-    } catch {
-      return next(new Error('UNAUTHORIZED'));
-    }
-  });
+    });
 
   io.on('connection', (socket) => {
     console.log(`Socket connected: ${socket.id} user:${socket.userId || 'anon'} role:${socket.role || '-'}`);
 
-    // Associate: supports both {token} and legacy {userId, role}
+    // Associate: re-auth with a fresh token while the socket stays open
     const associate = async (payload = {}) => {
-      const { token, userId, role } = payload;
+      const { token } = payload || {};
       if (token) {
         try {
           const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
@@ -48,18 +41,7 @@ export const initSocket = (io) => {
           socket.join(`user:${socket.userId}`);
           if (socket.role === 'driver') socket.join('drivers');
           if (['admin', 'super_admin', 'dispatcher', 'manager'].includes(socket.role)) socket.join('admins');
-          return;
         } catch { return; }
-      }
-      if (userId) {
-        // Legacy path
-        if (socket.userId) socket.leave(`user:${socket.userId}`);
-        socket.userId = String(userId);
-        socket.role = role;
-        socket.join(`user:${socket.userId}`);
-        if (role === 'driver') socket.join('drivers');
-        if (['admin', 'super_admin', 'dispatcher'].includes(role)) socket.join('admins');
-        return;
       }
       if (socket.userId) {
         socket.join(`user:${socket.userId}`);

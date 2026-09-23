@@ -33,6 +33,13 @@ export const updateProfile = async (userId, body) => {
   if (update.name && !update.name) throw fail('Name cannot be empty', 400);
   if (!Object.keys(update).length) throw fail('Nothing to update', 400);
 
+  // A phone that's shared with another account breaks phone-based login/OTP
+  // (findOne picks an arbitrary match). Enforce per-user uniqueness.
+  if (update.phone) {
+    const taken = await User.findOne({ phone: update.phone, _id: { $ne: userId } }).select('_id');
+    if (taken) throw fail('That phone number is already in use', 409);
+  }
+
   const user = await User.findByIdAndUpdate(userId, update, { new: true });
   if (!user) throw fail('User not found', 404);
   return publicProfile(user);

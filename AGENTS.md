@@ -399,7 +399,8 @@ Known keys (defaults in `settingsService.DEFAULTS`): `baseFare`, `perKm`,
 ## Socket.io Events
 
 ### Client → Server
-- `authenticate` `{ userId, role }` - Join `user:{id}` room (drivers also join `drivers` room; admins join `admins` room)
+- **Socket auth is JWT-only.** Pass `{ token }` (access JWT) via `socket.auth` on connect, or `authenticate` `{ token }` to re-auth mid-connection. The legacy `{ userId, role }` trust fallback was **removed** — claiming a user id without a token gets you an anonymous socket that can never join `user:`/`ride:` rooms or emit locations. Drivers join the `drivers` room, admins the `admins` room.
+- `authenticate` `{ token }` - Re-auth while connected: joins `user:{id}` room (drivers also `drivers`; admins `admins`)
 - `ride:join` `{ rideId }` - Join `ride:{rideId}` room. **Authorized only for the ride's passenger, its assigned driver, or admins** (locations flow through these rooms — unauthenticated joins are rejected).
 - `driver:location` `{ lat, lng, heading, speed }` - Driver position. **Server looks up the driver's active ride and forwards to `ride:{id}` room only.** Do NOT broadcast to all drivers/passengers.
 - `passenger:location` `{ lat, lng, heading, speed }` - Passenger position. Mirror of `driver:location` — forwarded to the passenger's active `ride:{id}` room so the assigned driver sees them live.

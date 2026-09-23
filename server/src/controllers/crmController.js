@@ -49,10 +49,16 @@ export const updateVehicle = asyncHandler(async (req, res) => {
 });
 
 export const listPassengers = asyncHandler(async (req, res) => {
-  const { search = '', page = 1, limit = 20 } = req.query;
+  const escaped = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const page = Math.max(1, Math.floor(Number(req.query.page)) || 1);
+  const limit = Math.min(100, Math.max(1, Math.floor(Number(req.query.limit)) || 20));
+  const { search = '' } = req.query;
   const q = { role: 'passenger' };
-  if (search) q.$or = [{ name: new RegExp(search, 'i') }, { email: new RegExp(search, 'i') }, { phone: new RegExp(search, 'i') }];
-  const passengers = await User.find(q).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(Number(limit)).lean();
+  if (search) {
+    const rx = new RegExp(escaped(search), 'i');
+    q.$or = [{ name: rx }, { email: rx }, { phone: rx }];
+  }
+  const passengers = await User.find(q).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit).lean();
   const total = await User.countDocuments(q);
   res.json({ passengers, total });
 });

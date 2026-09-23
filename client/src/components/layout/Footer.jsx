@@ -17,9 +17,9 @@ export default function Footer() {
     <footer className="mt-auto bg-brand-gradient text-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-4">
         <div>
-          <div className="flex items-center gap-2.5">
-            <img src="/logo.png" alt={BRAND_NAME} className="h-10 w-auto drop-shadow" />
-            <div className="text-lg font-bold text-white">
+          <div className="flex items-center gap-3">
+            <img src="/logo.png" alt={BRAND_NAME} className="h-14 w-auto drop-shadow" />
+            <div className="text-xl font-bold text-white">
               Romina <span className="text-gold-300">Limousine Service</span>
             </div>
           </div>

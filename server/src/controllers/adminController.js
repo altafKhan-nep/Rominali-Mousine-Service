@@ -13,6 +13,13 @@ import { notify } from '../services/notificationService.js';
 
 const ioOf = (req) => req.app.get('io');
 
+// Escape user-supplied search text before building a RegExp — prevents regex
+// injection / ReDoS on untrusted input reaching the query layer.
+const escaped = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const pageOf = (v, fallback = 1) => Math.max(1, Math.floor(Number(v)) || fallback);
+const limitOf = (v, fallback = 20, max = 100) =>
+  Math.min(max, Math.max(1, Math.floor(Number(v)) || fallback));
+
 // GET /api/admin/analytics
 export const analytics = asyncHandler(async (req, res) => {
   const [totalRides, activeRides, totalDrivers, totalPassengers, revenue, recentRides] =
@@ -40,17 +47,19 @@ export const analytics = asyncHandler(async (req, res) => {
 
 // GET /api/admin/rides?status=&page=&limit=
 export const rides = asyncHandler(async (req, res) => {
-  const { status, page = 1, limit = 20 } = req.query;
+  const { status } = req.query;
+  const page = pageOf(req.query.page);
+  const limit = limitOf(req.query.limit);
   const query = status ? { status } : {};
   const [rides, total] = await Promise.all([
     Ride.find(query)
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
-      .limit(+limit)
+      .limit(limit)
       .populate('passenger driver', 'name phone avatar'),
     Ride.countDocuments(query),
   ]);
-  res.json({ rides, total, page: +page, limit: +limit });
+  res.json({ rides, total, page, limit });
 });
 
 // GET /api/admin/drivers
@@ -123,11 +132,13 @@ export const toggleDriver = asyncHandler(async (req, res) => {
 
 // GET /api/admin/users?search=&role=&page=&limit=
 export const users = asyncHandler(async (req, res) => {
-  const { search = '', role = '', page = 1, limit = 20 } = req.query;
+  const { search = '', role = '' } = req.query;
+  const page = pageOf(req.query.page);
+  const limit = limitOf(req.query.limit);
   const query = {};
   if (role) query.role = role;
   if (search) {
-    const rx = new RegExp(search, 'i');
+    const rx = new RegExp(escaped(search), 'i');
     query.$or = [{ name: rx }, { email: rx }, { phone: rx }];
   }
   const [users, total] = await Promise.all([
@@ -135,10 +146,10 @@ export const users = asyncHandler(async (req, res) => {
       .select('-password')
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
-      .limit(+limit),
+      .limit(limit),
     User.countDocuments(query),
   ]);
-  res.json({ users, total, page: +page, limit: +limit });
+  res.json({ users, total, page, limit });
 });
 
 // PATCH /api/admin/users/:id/suspend
@@ -183,13 +194,15 @@ export const deleteUser = asyncHandler(async (req, res) => {
 
 // GET /api/admin/payments?status=&page=&limit=
 export const payments = asyncHandler(async (req, res) => {
-  const { status = '', page = 1, limit = 20 } = req.query;
+  const { status = '' } = req.query;
+  const page = pageOf(req.query.page);
+  const limit = limitOf(req.query.limit);
   const query = status ? { status } : {};
   const [payments, total, summary] = await Promise.all([
     Payment.find(query)
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
-      .limit(+limit)
+      .limit(limit)
       .populate('user', 'name email')
       .populate('ride', 'pickup dropoff'),
     Payment.countDocuments(query),
@@ -206,8 +219,8 @@ export const payments = asyncHandler(async (req, res) => {
   res.json({
     payments,
     total,
-    page: +page,
-    limit: +limit,
+    page,
+    limit,
     summary: Object.fromEntries(summary.map((s) => [s._id, s])),
   });
 });
