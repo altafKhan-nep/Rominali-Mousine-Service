@@ -18,7 +18,7 @@ const MAIN_LINKS = [
 
 const navItem = ({ isActive }) =>
   `rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
-    isActive ? 'bg-white/15 text-white' : 'text-white/80 hover:bg-white/10 hover:text-white'
+    isActive ? 'bg-white/15 text-white shadow-inner' : 'text-white/80 hover:bg-white/10 hover:text-white'
   }`;
 
 export default function Navbar() {
@@ -52,7 +52,8 @@ export default function Navbar() {
   }, [servicesOpen]);
 
   return (
-    <header className="bg-brand-gradient sticky top-0 z-[1001] shadow-md">
+    <header className="bg-brand-gradient sticky top-0 z-[1001] shadow-lg">
+      <div className="h-0.5 bg-gradient-to-r from-transparent via-gold-400/80 to-transparent" />
       <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
         <Link to="/" onClick={() => setOpen(false)} className="flex items-center gap-3">
           <img
@@ -91,7 +92,7 @@ export default function Navbar() {
 
             {servicesOpen && (
               <div className="absolute left-1/2 top-full w-[560px] -translate-x-1/2 pt-2">
-                <div className="overflow-hidden rounded-2xl bg-white p-3 shadow-2xl ring-1 ring-slate-200">
+                <div className="overflow-hidden rounded-2xl bg-white p-3 shadow-2xl ring-1 ring-accent-200">
                   <div className="grid grid-cols-2 gap-1">
                     {services.map((s) => {
                       const Icon = resolveServiceIcon(s);
@@ -112,7 +113,7 @@ export default function Navbar() {
                       );
                     })}
                   </div>
-                  <div className="mt-1 border-t border-slate-100 pt-2">
+                  <div className="mt-1 border-t border-accent-100 pt-2">
                     <button
                       onClick={() => go('/services')}
                       className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-50"
@@ -199,7 +200,7 @@ export default function Navbar() {
 
       {/* Mobile drawer */}
       {open && (
-        <div className="max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-white/10 bg-brand-gradient lg:hidden">
+        <div className="max-h-[calc(100dvh-5rem)] overflow-y-auto border-t border-white/10 bg-brand-gradient lg:hidden">
           <div className="mx-auto max-w-7xl space-y-1 px-4 py-4 sm:px-6">
             <button onClick={() => go('/')} className="block w-full rounded-2xl px-4 py-3 text-left text-sm font-medium text-white/90 transition-colors hover:bg-white/10">
               Home

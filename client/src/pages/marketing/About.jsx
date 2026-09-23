@@ -1,8 +1,12 @@
 import { Link } from 'react-router-dom';
-import { UserRound, Timer, Receipt, ShieldCheck, CarFront, Plane, Phone } from 'lucide-react';
+import { UserRound, Timer, Receipt, ShieldCheck, CarFront, Plane, Phone, Quote } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { Button } from '../../components/ui/Button.jsx';
 import { Reveal } from '../../components/ui/Reveal.jsx';
+import PageHero, { HeroActions, heroSecondary } from '../../components/marketing/PageHero.jsx';
+import Section, { SectionHead } from '../../components/marketing/Section.jsx';
+import CtaBand from '../../components/marketing/CtaBand.jsx';
+import IconTile from '../../components/marketing/IconTile.jsx';
 import { BRAND_NAME, PHONE_TEL, PHONE_DISPLAY } from '../../data/site.js';
 
 const WHY_US = [
@@ -44,49 +48,25 @@ export default function About() {
 
   return (
     <div>
-      {/* ============ HERO ============ */}
-      <section className="bg-brand-gradient relative overflow-hidden text-white">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -left-24 -top-24 h-80 w-80 rounded-full bg-white/5 blur-3xl" />
-          <div className="absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-gold-500/15 blur-3xl" />
-        </div>
-        <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-24">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-medium uppercase tracking-wider text-white/85 backdrop-blur">
-            <span className="h-2 w-2 rounded-full bg-gold-400" />
-            About us
-          </span>
-          <h1 className="mt-6 max-w-3xl text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
-            Setting the <span className="text-gold-300">gold standard</span> in private travel
-          </h1>
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/80">
-            Romina Limousine Service offers bespoke airport transfers, elite corporate travel and
-            sophisticated chauffeur services across Maryland, Virginia, and Washington DC — with
-            an elite, late-model private fleet and an absolute punctuality guarantee.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <Link to={bookUrl}>
-              <Button size="lg" className="bg-white !text-brand-900 shadow-xl hover:bg-brand-50">
-                Book your ride
-              </Button>
-            </Link>
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-white/10"
-            >
-              Get in touch
-            </Link>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="About us"
+        title="Setting the"
+        accent="gold standard"
+        subtitle="in private travel — bespoke airport transfers, elite corporate travel and sophisticated chauffeur services across Maryland, Virginia, and Washington DC."
+      >
+        <HeroActions bookTo={bookUrl} bookLabel="Book your ride">
+          <Link to="/contact" className={heroSecondary}>
+            Get in touch
+          </Link>
+        </HeroActions>
+      </PageHero>
 
       {/* ============ STORY ============ */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
+      <Section>
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div>
-            <span className="text-xs font-semibold uppercase tracking-widest text-brand-600">
-              Our story
-            </span>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+            <span className="eyebrow">Our story</span>
+            <h2 className="mt-4 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
               A chauffeur network that puts people first
             </h2>
             <p className="mt-5 text-base leading-relaxed text-muted">
@@ -108,8 +88,9 @@ export default function About() {
             </p>
           </div>
 
-          <div className="overflow-hidden rounded-3xl bg-brand-gradient text-white shadow-xl">
-            <div className="p-8 sm:p-10">
+          <div className="card-lift relative overflow-hidden rounded-3xl bg-brand-gradient text-white">
+            <Quote className="absolute -right-4 -top-4 h-32 w-32 text-white/10" aria-hidden />
+            <div className="relative p-8 sm:p-10">
               <div className="flex items-center gap-4">
                 <span className="grid h-16 w-16 place-items-center rounded-2xl bg-white/10">
                   <CarFront className="h-8 w-8 text-white" />
@@ -136,66 +117,46 @@ export default function About() {
             </div>
           </div>
         </div>
-      </section>
+      </Section>
 
       {/* ============ WHY CHOOSE US ============ */}
-      <section className="bg-brand-gradient-soft py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <div className="mx-auto max-w-2xl text-center">
-            <span className="text-xs font-semibold uppercase tracking-widest text-brand-600">
-              Why choose us
-            </span>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
-              The gold standard in premium travel
-            </h2>
-            <p className="mt-4 text-muted">
-              You have many options when it comes to transportation. With Romina Limousine Service,
-              you get an unparalleled journey that combines luxury, punctuality, personalized
-              service and safety.
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {WHY_US.map((f, i) => (
-              <Reveal key={f.title} delay={(i % 3) * 80} className="h-full">
-                <div className="card-lift h-full rounded-3xl border border-slate-200 bg-white p-7 shadow-sm">
-                  <span className="grid h-14 w-14 place-items-center rounded-2xl bg-brand-gradient-soft">
-                    <f.icon className="h-7 w-7 text-brand-700" />
-                  </span>
-                  <h3 className="mt-4 text-base font-bold text-ink">{f.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted">{f.desc}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+      <Section band>
+        <SectionHead
+          eyebrow="Why choose us"
+          title="The gold standard in premium travel"
+          sub="You have many options when it comes to transportation. With Romina Limousine Service, you get an unparalleled journey that combines luxury, punctuality, personalized service and safety."
+        />
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {WHY_US.map((f, i) => (
+            <Reveal key={f.title} delay={(i % 3) * 80} className="h-full">
+              <div className="card-lift h-full rounded-3xl bg-white p-7 ring-1 ring-accent-200/60">
+                <IconTile>
+                  <f.icon className="h-7 w-7 text-brand-700" />
+                </IconTile>
+                <h3 className="mt-4 text-base font-bold text-ink">{f.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted">{f.desc}</p>
+              </div>
+            </Reveal>
+          ))}
         </div>
-      </section>
+      </Section>
 
       {/* ============ CTA ============ */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
-        <div className="rounded-3xl bg-brand-gradient px-6 py-14 text-center text-white sm:px-12">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Choose {BRAND_NAME} for your next journey
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-white/80">
-            Reserve online in seconds or call our 24/7 concierge dispatch — we take care of the
-            rest with style and peace of mind.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <Link to={bookUrl}>
-              <Button size="lg" className="bg-white !text-brand-900 shadow-xl hover:bg-brand-50">
-                Book now
-              </Button>
-            </Link>
-            <Link
-              to="/careers"
-              className="inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-white/10"
-            >
-              Drive with us
-            </Link>
-          </div>
-        </div>
-      </section>
+      <Section>
+        <CtaBand
+          title={`Choose ${BRAND_NAME} for your next journey`}
+          sub="Reserve online in seconds or call our 24/7 concierge dispatch — we take care of the rest with style and peace of mind."
+        >
+          <Link to={bookUrl}>
+            <Button size="lg" className="bg-white !text-brand-900 shadow-xl hover:bg-brand-50">
+              Book now
+            </Button>
+          </Link>
+          <Link to="/careers" className={heroSecondary}>
+            Drive with us
+          </Link>
+        </CtaBand>
+      </Section>
     </div>
   );
 }

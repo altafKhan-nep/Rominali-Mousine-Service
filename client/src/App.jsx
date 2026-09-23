@@ -1,10 +1,21 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { useAuth } from './context/AuthContext.jsx';
 import Navbar from './components/layout/Navbar.jsx';
 import Footer from './components/layout/Footer.jsx';
 import { Spinner } from './components/ui/Spinner.jsx';
 import VerifyEmailBanner from './components/auth/VerifyEmailBanner.jsx';
+
+// Immersive auth pages get their own full-viewport split layout — no nav/footer.
+const AUTH_ROUTES = ['/login', '/register', '/forgot-password', '/reset-password', '/verify-email', '/auth/social'];
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
 
 // Code-split all routes — reduces initial JS from 927kB to ~180kB
 const Home = lazy(() => import('./pages/marketing/Home.jsx'));
@@ -82,6 +93,7 @@ export default function App() {
   const location = useLocation();
   const isAdmin = location.pathname.startsWith('/admin');
   const isDriver = location.pathname.startsWith('/driver');
+  const isAuthRoute = AUTH_ROUTES.includes(location.pathname);
   if (isAdmin) {
     if (location.pathname.startsWith('/admin/legacy')) {
       return (
@@ -157,8 +169,9 @@ export default function App() {
   }
   return (
     <div className="flex min-h-screen flex-col">
-      <Navbar />
-      <VerifyEmailBanner />
+      <ScrollToTop />
+      {!isAuthRoute && <Navbar />}
+      {!isAuthRoute && <VerifyEmailBanner />}
       <main className="flex-1">
         <Suspense fallback={<Fallback />}>
           <Routes>
@@ -191,7 +204,7 @@ export default function App() {
           </Routes>
         </Suspense>
       </main>
-      <Footer />
+      {!isAuthRoute && <Footer />}
     </div>
   );
 }

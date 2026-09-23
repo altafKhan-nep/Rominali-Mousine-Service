@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { tokenStore } from '../services/api.js';
 import { Spinner } from '../components/ui/Spinner.jsx';
 import { Button } from '../components/ui/Button.jsx';
+import AuthLayout from '../components/auth/AuthLayout.jsx';
 
 // Landing page for the Passport OAuth callback. The server redirects here with
 // fresh tokens in the query string (or ?error=... on failure). We store them
@@ -44,34 +45,32 @@ export default function SocialCallback() {
     window.location.replace('/');
   }, []);
 
+  const copy =
+    status === 'loading'
+      ? { title: 'Finishing sign-in…', sub: 'Connecting you to Romina Limousine Service.' }
+      : { title: 'Sign-in failed', sub: "We couldn't log you in with that account. Please try again or use another method." };
+
   return (
-    <div className="mx-auto flex max-w-md flex-col px-4 py-24 text-center">
-      <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+    <AuthLayout title={copy.title} subtitle={copy.sub}>
+      <div className="py-2 text-center">
         {status === 'loading' && (
-          <>
-            <h1 className="text-2xl font-bold">Finishing sign-in…</h1>
-            <div className="mt-6 flex justify-center">
-              <Spinner />
-            </div>
-          </>
+          <div className="flex justify-center">
+            <Spinner />
+          </div>
         )}
         {status === 'error' && (
-          <>
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-red-100 text-2xl text-red-700">
-              !
-            </div>
-            <h1 className="text-2xl font-bold">Sign-in failed</h1>
-            <p className="mt-2 text-sm text-muted">
-              We couldn't log you in with that account. Please try again or use another method.
-            </p>
-            <Link to="/login" className="mt-6 block">
-              <Button size="lg" variant="outline" className="w-full">
-                Back to sign in
-              </Button>
-            </Link>
-          </>
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-red-100 text-2xl text-red-700">
+            !
+          </div>
+        )}
+        {status === 'error' && (
+          <Link to="/login" className="block">
+            <Button size="lg" variant="outline" className="w-full">
+              Back to sign in
+            </Button>
+          </Link>
         )}
       </div>
-    </div>
+    </AuthLayout>
   );
 }

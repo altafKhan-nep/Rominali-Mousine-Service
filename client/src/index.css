@@ -96,7 +96,7 @@ h6 {
 }
 
 .bg-brand-gradient-soft {
-  background: linear-gradient(135deg, #ffffff 0%, #fdf6f6 55%, #f7eaea 100%);
+  background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-brand-50) 55%, var(--color-brand-100) 100%);
 }
 
 .btn-brand-gradient {
@@ -117,6 +117,56 @@ h6 {
 /* ---- Inputs: pill shape (Uber-style touch targets) ---- */
 .input-pill {
   border-radius: 9999px;
+}
+
+/* ---- Layout primitives: consistent gutters + vertical rhythm ---- */
+.shell {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 80rem; /* max-w-7xl */
+  padding-inline: 1rem;
+}
+@media (min-width: 640px) {
+  .shell {
+    padding-inline: 1.5rem;
+  }
+}
+
+.section {
+  padding-block: 5rem; /* py-20 */
+}
+.section-sm {
+  padding-block: 3.5rem;
+}
+@media (min-width: 1024px) {
+  .section {
+    padding-block: 6rem; /* lg:py-24 */
+  }
+  .section-sm {
+    padding-block: 4.5rem;
+  }
+}
+
+/* ---- Eyebrow: small caps + gold dot — the "hand-written" editorial cue ---- */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-brand-600);
+}
+.eyebrow::before {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: var(--color-gold-500);
+}
+.eyebrow-on-dark {
+  color: var(--color-gold-300);
 }
 
 /* ---- Leaflet overrides so the map matches the palette ---- */

@@ -26,7 +26,7 @@ const FacebookIcon = () => (
 );
 
 const buttonBase =
-  'flex w-full items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-ink transition-colors hover:bg-slate-50';
+  'flex w-full items-center justify-center gap-2 rounded-full border border-accent-200 bg-white px-4 py-3 text-sm font-semibold text-ink shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-md';
 
 export default function SocialLoginButtons() {
   const [notice, setNotice] = useState('');
@@ -37,9 +37,9 @@ export default function SocialLoginButtons() {
   return (
     <div className="mt-6">
       <div className="flex items-center gap-3 text-xs text-muted">
-        <span className="h-px flex-1 bg-slate-200" />
+        <span className="h-px flex-1 bg-accent-200" />
         or continue with
-        <span className="h-px flex-1 bg-slate-200" />
+        <span className="h-px flex-1 bg-accent-200" />
       </div>
 
       {notice && (

@@ -8,6 +8,7 @@ import {
 import { useAuth } from '../../context/AuthContext.jsx';
 import { Button } from '../../components/ui/Button.jsx';
 import { Reveal } from '../../components/ui/Reveal.jsx';
+import { heroSecondary } from '../../components/marketing/PageHero.jsx';
 import { useMediaQuery } from '../../hooks/useMediaQuery.js';
 import { useWebGLSupport } from '../../components/three/useWebGLSupport.js';
 import { SERVICES, FEATURED_SERVICES } from '../../data/services.js';
@@ -198,7 +199,7 @@ export default function Home() {
                 </Link>
                 <a
                   href={PHONE_TEL}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-white/10"
+                  className={heroSecondary}
                 >
                   <Phone className="h-4 w-4" />
                   {PHONE_DISPLAY}
@@ -226,13 +227,13 @@ export default function Home() {
                 </p>
 
                 <div className="mt-6 space-y-4">
-                  <div className="flex items-center gap-3 rounded-full border border-slate-200 bg-slate-50 px-4 py-3">
+                  <div className="flex items-center gap-3 rounded-full border border-accent-200 bg-accent-50 px-4 py-3">
                     <MapPin className="h-4 w-4 text-brand-600" />
-                    <span className="text-sm text-slate-500">Pickup — where are you?</span>
+                    <span className="text-sm text-accent-500">Pickup — where are you?</span>
                   </div>
-                  <div className="flex items-center gap-3 rounded-full border border-slate-200 bg-slate-50 px-4 py-3">
+                  <div className="flex items-center gap-3 rounded-full border border-accent-200 bg-accent-50 px-4 py-3">
                     <Flag className="h-4 w-4 text-brand-600" />
-                    <span className="text-sm text-slate-500">Dropoff — where to?</span>
+                    <span className="text-sm text-accent-500">Dropoff — where to?</span>
                   </div>
                 </div>
 
@@ -288,7 +289,7 @@ export default function Home() {
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div>
-            <span className="text-xs font-semibold uppercase tracking-widest text-brand-600">
+            <span className="eyebrow">
               Welcome to {BRAND_NAME}
             </span>
             <h2 className="mt-3 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
@@ -360,7 +361,7 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <span className="text-xs font-semibold uppercase tracking-widest text-brand-600">
+              <span className="eyebrow">
                 What we offer
               </span>
               <h2 className="mt-3 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
@@ -380,7 +381,7 @@ export default function Home() {
               <Reveal key={s.slug} delay={(i % 3) * 100} className="h-full">
                 <Link
                   to={`/services/${s.slug}`}
-                  className="card-lift group relative flex h-full flex-col rounded-3xl border border-slate-200 bg-white p-7 shadow-sm"
+                  className="card-lift group relative flex h-full flex-col rounded-3xl bg-white p-7 ring-1 ring-accent-200/60"
                 >
                   <div className="absolute inset-x-0 top-0 h-1.5 rounded-t-3xl bg-brand-gradient opacity-0 transition-opacity group-hover:opacity-100" />
                   <span className="grid h-14 w-14 place-items-center rounded-2xl bg-brand-gradient-soft">
@@ -436,7 +437,7 @@ export default function Home() {
       {/* ============ WHY ROMINA / FEATURES ============ */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <span className="text-xs font-semibold uppercase tracking-widest text-brand-600">
+          <span className="eyebrow">
             The Romina standard
           </span>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
@@ -451,7 +452,7 @@ export default function Home() {
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURES.map((f, i) => (
             <Reveal key={f.title} delay={(i % 3) * 100} className="h-full">
-              <div className="card-lift h-full rounded-3xl border border-slate-200 bg-white p-7 shadow-sm">
+              <div className="card-lift h-full rounded-3xl bg-white p-7 ring-1 ring-accent-200/60">
                 <span className="grid h-14 w-14 place-items-center rounded-2xl bg-brand-gradient-soft">
                   <f.icon className="h-7 w-7 text-brand-700" />
                 </span>
@@ -475,7 +476,7 @@ export default function Home() {
       <section className="bg-brand-gradient-soft py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="mx-auto max-w-2xl text-center">
-            <span className="text-xs font-semibold uppercase tracking-widest text-brand-600">
+            <span className="eyebrow">
               Airport transportation services
             </span>
             <h2 className="mt-3 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
@@ -490,7 +491,7 @@ export default function Home() {
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {AIRPORT_SERVICES.map((a, i) => (
               <Reveal key={a.name} delay={(i % 3) * 90} className="h-full">
-                <div className="card-lift h-full rounded-3xl border border-slate-200 bg-white p-7 shadow-sm">
+                <div className="card-lift h-full rounded-3xl bg-white p-7 ring-1 ring-accent-200/60">
                   <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-gradient-soft">
                     <a.icon className="h-6 w-6 text-brand-700" />
                   </span>
@@ -521,7 +522,7 @@ export default function Home() {
       {/* ============ HOW IT WORKS ============ */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <span className="text-xs font-semibold uppercase tracking-widest text-brand-600">
+          <span className="eyebrow">
             Simple &amp; swift booking
           </span>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
@@ -535,8 +536,10 @@ export default function Home() {
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {STEPS.map((s, i) => (
             <Reveal key={s.n} delay={i * 120} className="h-full">
-              <div className="card-lift h-full rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-                <div className="text-brand-gradient text-4xl font-extrabold">{s.n}</div>
+              <div className="card-lift h-full rounded-3xl bg-white p-8 ring-1 ring-accent-200/60">
+                <div className="text-brand-gradient font-display text-5xl font-black tracking-tight">
+                  {s.n}
+                </div>
                 <h3 className="mt-4 text-lg font-bold text-ink">{s.t}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{s.d}</p>
               </div>
@@ -549,7 +552,7 @@ export default function Home() {
       <section className="bg-brand-gradient py-20 text-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="mx-auto max-w-2xl text-center">
-            <span className="text-xs font-semibold uppercase tracking-widest text-gold-300">
+            <span className="eyebrow eyebrow-on-dark">
               Testimonials
             </span>
             <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
@@ -588,7 +591,7 @@ export default function Home() {
       {/* ============ SERVICE AREAS ============ */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <span className="text-xs font-semibold uppercase tracking-widest text-brand-600">
+          <span className="eyebrow">
             Luxury coverage
           </span>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
@@ -622,7 +625,7 @@ export default function Home() {
             },
           ].map((region, ri) => (
             <Reveal key={region.title} delay={ri * 90} className="h-full">
-              <div className="card-lift h-full rounded-3xl border border-slate-200 bg-white p-7 shadow-sm">
+              <div className="card-lift h-full rounded-3xl bg-white p-7 ring-1 ring-accent-200/60">
                 <div className="flex items-center gap-4">
                   <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-brand-gradient-soft">
                     <region.icon className="h-6 w-6 text-brand-700" />

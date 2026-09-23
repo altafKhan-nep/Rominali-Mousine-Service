@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { BadgeDollarSign, Clock, Smartphone, Handshake, Trophy, ShieldCheck, Check, Mail, MailCheck } from 'lucide-react';
+import PageHero from '../../components/marketing/PageHero.jsx';
+import Section, { SectionHead } from '../../components/marketing/Section.jsx';
+import IconTile from '../../components/marketing/IconTile.jsx';
 import { EMAIL } from '../../data/site.js';
 
 const PERKS = [
@@ -53,67 +56,45 @@ export default function Careers() {
   };
 
   const field =
-    'input-pill w-full border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-200';
+    'input-pill w-full border border-accent-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-accent-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-200';
 
   return (
     <div>
-      {/* ============ HERO ============ */}
-      <section className="bg-brand-gradient relative overflow-hidden text-white">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -right-24 -top-24 h-80 w-80 rounded-full bg-white/5 blur-3xl" />
-          <div className="absolute -left-24 bottom-0 h-80 w-80 rounded-full bg-gold-500/15 blur-3xl" />
-        </div>
-        <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-24">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-medium uppercase tracking-wider text-white/85 backdrop-blur">
-            <span className="h-2 w-2 rounded-full bg-gold-400" />
-            Careers
-          </span>
-          <h1 className="mt-6 max-w-3xl text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
-            Explore employment at <span className="text-gold-300">Romina Limousine Service</span>
-          </h1>
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/80">
-            Join a growing team of professional chauffeurs who take pride in punctual, courteous and
-            safe luxury service across Maryland, Virginia, and Washington DC.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Careers"
+        title="Explore employment at"
+        accent="Romina Limousine Service"
+        subtitle="Join a growing team of professional chauffeurs who take pride in punctual, courteous and safe luxury service across Maryland, Virginia, and Washington DC."
+      />
 
       {/* ============ PERKS ============ */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="text-xs font-semibold uppercase tracking-widest text-brand-600">
-            Why drive with us
-          </span>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
-            Build your career on the road
-          </h2>
-          <p className="mt-4 text-muted">
-            We invest in our chauffeurs because they are the face of Romina Limousine Service.
-          </p>
-        </div>
+      <Section>
+        <SectionHead
+          eyebrow="Why drive with us"
+          title="Build your career on the road"
+          sub="We invest in our chauffeurs because they are the face of Romina Limousine Service."
+        />
 
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {PERKS.map((p) => (
-            <div key={p.title} className="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm">
-              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-gradient-soft">
+            <div key={p.title} className="card-lift rounded-3xl bg-white p-7 ring-1 ring-accent-200/60">
+              <IconTile size="sm">
                 <p.icon className="h-6 w-6 text-brand-700" />
-              </span>
+              </IconTile>
               <h3 className="mt-4 text-base font-bold text-ink">{p.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted">{p.desc}</p>
             </div>
           ))}
         </div>
-      </section>
+      </Section>
 
       {/* ============ REQUIREMENTS + FORM ============ */}
-      <section className="bg-brand-gradient-soft py-20">
-        <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-2">
+      <Section band>
+        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2">
           {/* Requirements */}
           <div>
-            <span className="text-xs font-semibold uppercase tracking-widest text-brand-600">
-              What we look for
-            </span>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight text-ink">
+            <span className="eyebrow">What we look for</span>
+            <h2 className="mt-4 text-3xl font-bold tracking-tight text-ink">
               Driver requirements
             </h2>
             <p className="mt-4 text-muted">
@@ -131,7 +112,7 @@ export default function Careers() {
               ))}
             </ul>
 
-            <div className="mt-10 rounded-2xl border border-slate-200 bg-white p-6">
+            <div className="card-lift mt-10 rounded-2xl bg-white p-6 ring-1 ring-accent-200/60">
               <h3 className="text-base font-bold text-ink">Prefer a paper application?</h3>
               <p className="mt-1.5 text-sm text-muted">
                 Email us directly and we will send you the application form to fill in and return
@@ -156,7 +137,7 @@ export default function Careers() {
           </div>
 
           {/* Contact form */}
-          <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+          <div className="card-lift rounded-3xl bg-white p-8 ring-1 ring-accent-200/60">
             <h2 className="text-2xl font-bold text-ink">Get in touch</h2>
             <p className="mt-1.5 text-sm text-muted">
               Tell us about yourself — our recruiting team responds within one business day.
@@ -192,7 +173,7 @@ export default function Careers() {
                   placeholder="Message *"
                   value={form.message || ''}
                   onChange={set('message')}
-                  className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-200"
+                  className="w-full rounded-2xl border border-accent-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-accent-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-200"
                 />
 
                 {error && <p className="rounded-xl bg-red-50 px-4 py-2.5 text-sm text-red-700">{error}</p>}
@@ -210,7 +191,7 @@ export default function Careers() {
             )}
           </div>
         </div>
-      </section>
+      </Section>
     </div>
   );
 }
