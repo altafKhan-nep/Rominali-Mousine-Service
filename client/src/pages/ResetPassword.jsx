@@ -1,32 +1,32 @@
-import { useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
-import { Input } from '../components/ui/Input.jsx';
-import { Button } from '../components/ui/Button.jsx';
-import AuthLayout from '../components/auth/AuthLayout.jsx';
-import { resetPassword } from '../services/authService.js';
+import { useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { Input } from "../components/ui/Input.jsx";
+import { Button } from "../components/ui/Button.jsx";
+import AuthLayout from "../components/auth/AuthLayout.jsx";
+import { resetPassword } from "../services/authService.js";
 
 export default function ResetPassword() {
   const [searchParams] = useSearchParams();
-  const token = searchParams.get('token') || '';
+  const token = searchParams.get("token") || "";
 
-  const [form, setForm] = useState({ password: '', confirm: '' });
-  const [error, setError] = useState('');
+  const [form, setForm] = useState({ password: "", confirm: "" });
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
 
   const submit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     if (!token) {
-      setError('This reset link is invalid. Request a new one.');
+      setError("This reset link is invalid. Request a new one.");
       return;
     }
     if (form.password.length < 6) {
-      setError('Password must be at least 6 characters.');
+      setError("Password must be at least 6 characters.");
       return;
     }
     if (form.password !== form.confirm) {
-      setError('Passwords do not match.');
+      setError("Passwords do not match.");
       return;
     }
     setLoading(true);
@@ -34,7 +34,9 @@ export default function ResetPassword() {
       await resetPassword(token, form.password);
       setDone(true);
     } catch (err) {
-      setError(err.response?.data?.message || 'Reset failed. Request a new link.');
+      setError(
+        err.response?.data?.message || "Reset failed. Request a new link.",
+      );
     } finally {
       setLoading(false);
     }
@@ -42,11 +44,14 @@ export default function ResetPassword() {
 
   return (
     <AuthLayout
-      title={done ? 'Password updated' : 'Choose a new password'}
+      title={done ? "Password updated" : "Choose a new password"}
       subtitle={done ? undefined : "Make sure it's at least 6 characters."}
       footer={
         done ? (
-          <Link to="/login" className="block text-center text-sm font-semibold text-brand-700 hover:underline">
+          <Link
+            to="/login"
+            className="block text-center text-sm font-semibold text-brand-700 hover:underline"
+          >
             Sign in with your new password
           </Link>
         ) : undefined
@@ -76,7 +81,11 @@ export default function ResetPassword() {
             value={form.confirm}
             onChange={(e) => setForm({ ...form, confirm: e.target.value })}
           />
-          {error && <p className="rounded-xl bg-red-50 px-4 py-2.5 text-sm text-red-700">{error}</p>}
+          {error && (
+            <p className="rounded-xl bg-red-50 px-4 py-2.5 text-sm text-red-700">
+              {error}
+            </p>
+          )}
           <Button type="submit" size="lg" loading={loading} className="w-full">
             Reset password
           </Button>
