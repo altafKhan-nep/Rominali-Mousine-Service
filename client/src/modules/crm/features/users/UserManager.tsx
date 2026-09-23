@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../../../../services/api.js';
 import { Card } from '../../components/ui/card';
@@ -18,14 +18,20 @@ const emptyForm = (role: 'passenger' | 'driver') => ({
 export default function UserManager({ role }: { role: 'passenger' | 'driver' }) {
   const qc = useQueryClient();
   const [q, setQ] = useState('');
+  const [debouncedQ, setDebouncedQ] = useState('');
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<any|null>(null);
   const [form, setForm] = useState<any>(emptyForm(role));
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedQ(q), 300);
+    return () => clearTimeout(t);
+  }, [q]);
+
   const { data, isLoading } = useQuery({
-    queryKey: ['crm','users',role,q],
-    queryFn: async () => (await api.get('/crm/users', { params: { search: q, role } })).data,
+    queryKey: ['crm','users',role,debouncedQ],
+    queryFn: async () => (await api.get('/crm/users', { params: { search: debouncedQ || undefined, role } })).data,
   });
   const users: any[] = (data as any)?.users ?? [];
 
@@ -50,6 +56,13 @@ export default function UserManager({ role }: { role: 'passenger' | 'driver' }) 
       if (u.isSuspended) await api.patch(`/crm/users/${u._id}/unsuspend`);
       else await api.patch(`/crm/users/${u._id}/suspend`);
     },
+    onSuccess: invalidate,
+    onError: (e: any) => alert(e?.response?.data?.message || 'Failed'),
+  });
+
+  const toggleAvail = useMutation({
+    mutationFn: async (u: any) =>
+      api.patch(`/crm/users/${u._id}`, { driverDetails: { isAvailable: !u.driverDetails?.isAvailable } }),
     onSuccess: invalidate,
     onError: (e: any) => alert(e?.response?.data?.message || 'Failed'),
   });
@@ -92,6 +105,44 @@ export default function UserManager({ role }: { role: 'passenger' | 'driver' }) 
         </button>
       </div>
 
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <div className="rounded-2xl border border-accent-200 bg-white p-4 dark:border-accent-800 dark:bg-accent-900">
+          <p className="text-xs text-muted">Total</p>
+          <p className="text-xl font-bold">{users.length}</p>
+        </div>
+        {role === 'driver' ? (
+          <>
+            <div className="rounded-2xl border border-accent-200 bg-white p-4 dark:border-accent-800 dark:bg-accent-900">
+              <p className="text-xs text-muted">Online</p>
+              <p className="text-xl font-bold text-green-600">{users.filter((u) => u.driverDetails?.isAvailable).length}</p>
+            </div>
+            <div className="rounded-2xl border border-accent-200 bg-white p-4 dark:border-accent-800 dark:bg-accent-900">
+              <p className="text-xs text-muted">Offline</p>
+              <p className="text-xl font-bold text-muted">{users.filter((u) => !u.driverDetails?.isAvailable).length}</p>
+            </div>
+            <div className="rounded-2xl border border-accent-200 bg-white p-4 dark:border-accent-800 dark:bg-accent-900">
+              <p className="text-xs text-muted">Suspended</p>
+              <p className="text-xl font-bold text-red-600">{users.filter((u) => u.isSuspended).length}</p>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="rounded-2xl border border-accent-200 bg-white p-4 dark:border-accent-800 dark:bg-accent-900">
+              <p className="text-xs text-muted">Verified</p>
+              <p className="text-xl font-bold text-green-600">{users.filter((u) => u.emailVerified).length}</p>
+            </div>
+            <div className="rounded-2xl border border-accent-200 bg-white p-4 dark:border-accent-800 dark:bg-accent-900">
+              <p className="text-xs text-muted">Suspended</p>
+              <p className="text-xl font-bold text-red-600">{users.filter((u) => u.isSuspended).length}</p>
+            </div>
+            <div className="rounded-2xl border border-accent-200 bg-white p-4 dark:border-accent-800 dark:bg-accent-900">
+              <p className="text-xs text-muted">With phone</p>
+              <p className="text-xl font-bold">{users.filter((u) => u.phone).length}</p>
+            </div>
+          </>
+        )}
+      </div>
+
       <input
         value={q}
         onChange={(e) => setQ(e.target.value)}
@@ -120,7 +171,19 @@ export default function UserManager({ role }: { role: 'passenger' | 'driver' }) 
                 </p>
               )}
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center justify-end gap-2">
+              {role === 'driver' && (
+                <button
+                  onClick={() => toggleAvail.mutate(u)}
+                  className={`rounded-full border px-3 py-1.5 text-xs font-medium ${
+                    u.driverDetails?.isAvailable
+                      ? 'border-accent-200 hover:bg-accent-50 dark:border-accent-700 dark:hover:bg-white/5'
+                      : 'border-green-200 text-green-700 hover:bg-green-50 dark:border-green-900'
+                  }`}
+                >
+                  {u.driverDetails?.isAvailable ? 'Go offline' : 'Go online'}
+                </button>
+              )}
               <button onClick={() => openEdit(u)} className="rounded-full border border-accent-200 px-3 py-1.5 text-xs font-medium hover:bg-accent-50 dark:border-accent-700 dark:hover:bg-white/5">Edit</button>
               <button onClick={() => setSuspend.mutate(u)} className="rounded-full border border-accent-200 px-3 py-1.5 text-xs font-medium hover:bg-accent-50 dark:border-accent-700 dark:hover:bg-white/5">
                 {u.isSuspended ? 'Unsuspend' : 'Suspend'}

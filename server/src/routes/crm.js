@@ -22,6 +22,7 @@ router.get('/drivers', admin.drivers);
 router.get('/fleet/vehicles', crm.listVehicles);
 router.post('/fleet/vehicles', audit('fleet.createVehicle', { targetType: 'Vehicle' }), crm.createVehicle);
 router.patch('/fleet/vehicles/:id', audit('fleet.updateVehicle', { targetType: 'Vehicle' }), crm.updateVehicle);
+router.delete('/fleet/vehicles/:id', audit('fleet.deleteVehicle', { targetType: 'Vehicle' }), crm.deleteVehicle);
 
 router.get('/users', admin.users);
 router.post('/users', audit('users.create', { targetType: 'User' }), admin.createUser);

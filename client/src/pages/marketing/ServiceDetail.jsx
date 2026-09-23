@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext.jsx';
 import { Button } from '../../components/ui/Button.jsx';
 import { Reveal } from '../../components/ui/Reveal.jsx';
 import { SERVICES } from '../../data/services.js';
+import { resolveServiceIcon } from '../../data/serviceIcons.js';
 import { PHONE_TEL, PHONE_DISPLAY } from '../../data/site.js';
 import { useSiteContent } from '../../hooks/useSiteContent.js';
 
@@ -14,6 +15,7 @@ export default function ServiceDetail() {
   const services = useSiteContent('services', SERVICES);
   const service = services.find((s) => s.slug === slug);
   const others = services.filter((s) => s.slug !== slug);
+  const ServiceIcon = resolveServiceIcon(service);
 
   if (!service) {
     return (
@@ -37,7 +39,7 @@ export default function ServiceDetail() {
         <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-24">
           <div className="flex items-center gap-3">
             <span className="grid h-14 w-14 place-items-center rounded-2xl bg-white/10 backdrop-blur">
-              <service.icon className="h-7 w-7 text-white" />
+              <ServiceIcon className="h-7 w-7 text-white" />
             </span>
             <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-medium uppercase tracking-wider text-white/85 backdrop-blur">
               <span className="h-2 w-2 rounded-full bg-gold-400" />
@@ -150,14 +152,16 @@ export default function ServiceDetail() {
           </div>
 
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {others.slice(0, 6).map((s, i) => (
+            {others.slice(0, 6).map((s, i) => {
+              const Icon = resolveServiceIcon(s);
+              return (
               <Reveal key={s.slug} delay={(i % 3) * 90} className="h-full">
                 <Link
                   to={`/services/${s.slug}`}
                   className="card-lift group flex h-full items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
                 >
                   <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-brand-gradient-soft">
-                    <s.icon className="h-6 w-6 text-brand-700" />
+                    <Icon className="h-6 w-6 text-brand-700" />
                   </span>
                   <span>
                     <span className="block font-bold text-ink">{s.name}</span>
@@ -166,7 +170,8 @@ export default function ServiceDetail() {
                   <ArrowRight className="ml-auto h-4 w-4 text-brand-700" aria-hidden />
                 </Link>
               </Reveal>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

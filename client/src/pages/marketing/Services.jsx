@@ -4,6 +4,7 @@ import { Button } from '../../components/ui/Button.jsx';
 import { Reveal } from '../../components/ui/Reveal.jsx';
 import { Timer, BadgeDollarSign, Plane, CarFront, Phone, ArrowRight } from 'lucide-react';
 import { SERVICES } from '../../data/services.js';
+import { resolveServiceIcon } from '../../data/serviceIcons.js';
 import { PHONE_TEL, PHONE_DISPLAY } from '../../data/site.js';
 import { useSiteContent } from '../../hooks/useSiteContent.js';
 
@@ -73,7 +74,9 @@ export default function Services() {
         </div>
 
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {services.map((s, i) => (
+          {services.map((s, i) => {
+            const Icon = resolveServiceIcon(s);
+            return (
             <Reveal key={s.slug} delay={(i % 3) * 90} className="h-full">
               <Link
                 to={`/services/${s.slug}`}
@@ -82,7 +85,7 @@ export default function Services() {
                 <div className="absolute inset-x-0 top-0 h-1.5 bg-brand-gradient opacity-0 transition-opacity group-hover:opacity-100" />
                 <div className="flex items-start justify-between">
                   <span className="grid h-14 w-14 place-items-center rounded-2xl bg-brand-gradient-soft">
-                    <s.icon className="h-7 w-7 text-brand-700" />
+                    <Icon className="h-7 w-7 text-brand-700" />
                   </span>
                   <span className="rounded-full bg-accent-50 px-3 py-1 text-xs font-semibold text-accent-700">
                     {s.tagline}
@@ -97,7 +100,8 @@ export default function Services() {
                 </span>
               </Link>
             </Reveal>
-          ))}
+            );
+          })}
         </div>
       </section>
 

@@ -47,6 +47,11 @@ export const updateVehicle = asyncHandler(async (req, res) => {
   if (!v) return res.status(404).json({ message: 'Vehicle not found' });
   res.json({ vehicle: v });
 });
+export const deleteVehicle = asyncHandler(async (req, res) => {
+  const v = await Vehicle.findByIdAndDelete(req.params.id);
+  if (!v) return res.status(404).json({ message: 'Vehicle not found' });
+  res.json({ success: true, id: req.params.id });
+});
 
 export const listPassengers = asyncHandler(async (req, res) => {
   const escaped = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

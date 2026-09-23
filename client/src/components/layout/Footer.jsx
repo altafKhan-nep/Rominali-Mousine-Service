@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin, Clock } from 'lucide-react';
 import { SERVICES } from '../../data/services.js';
+import { useSiteContent } from '../../hooks/useSiteContent.js';
 import {
   BRAND_NAME, EMAIL, PHONE_TEL, PHONE_DISPLAY, PHONE_ALT_TEL, PHONE_ALT_DISPLAY,
   FACEBOOK, INSTAGRAM, WHATSAPP,
@@ -13,13 +14,14 @@ const SOCIALS = [
 ];
 
 export default function Footer() {
+  const services = useSiteContent('services', SERVICES);
   return (
     <footer className="mt-auto bg-brand-gradient text-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-4">
         <div>
           <div className="flex items-center gap-3">
-            <img src="/logo.png" alt={BRAND_NAME} className="h-14 w-auto drop-shadow" />
-            <div className="text-xl font-bold text-white">
+            <img src="/logo.png" alt={BRAND_NAME} className="h-20 w-auto drop-shadow" />
+            <div className="text-2xl font-bold text-white">
               Romina <span className="text-gold-300">Limousine Service</span>
             </div>
           </div>
@@ -75,7 +77,7 @@ export default function Footer() {
         <div>
           <h4 className="text-sm font-semibold text-white">Services</h4>
           <ul className="mt-3 space-y-2 text-sm text-white/75">
-            {SERVICES.slice(0, 7).map((s) => (
+            {services.slice(0, 7).map((s) => (
               <li key={s.slug}>
                 <Link to={`/services/${s.slug}`} className="transition-colors hover:text-white">
                   {s.name}

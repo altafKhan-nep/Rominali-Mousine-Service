@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Phone, ArrowRight } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { SERVICES } from '../../data/services.js';
+import { useSiteContent } from '../../hooks/useSiteContent.js';
+import { resolveServiceIcon } from '../../data/serviceIcons.js';
 import NotificationsBell from './NotificationsBell.jsx';
 import { PHONE_TEL, PHONE_DISPLAY } from '../../data/site.js';
 
@@ -22,6 +24,7 @@ const navItem = ({ isActive }) =>
 export default function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const services = useSiteContent('services', SERVICES);
   const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -55,9 +58,9 @@ export default function Navbar() {
           <img
             src="/logo.png"
             alt="Romina Limousine Service logo"
-            className="h-12 w-auto drop-shadow"
+            className="h-16 w-auto drop-shadow"
           />
-          <span className="text-xl font-bold tracking-tight text-white sm:text-2xl">
+          <span className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
             Romina <span className="text-gold-300">Limousine</span>
           </span>
         </Link>
@@ -90,21 +93,24 @@ export default function Navbar() {
               <div className="absolute left-1/2 top-full w-[560px] -translate-x-1/2 pt-2">
                 <div className="overflow-hidden rounded-2xl bg-white p-3 shadow-2xl ring-1 ring-slate-200">
                   <div className="grid grid-cols-2 gap-1">
-                    {SERVICES.map((s) => (
+                    {services.map((s) => {
+                      const Icon = resolveServiceIcon(s);
+                      return (
                       <button
                         key={s.slug}
                         onClick={() => go(`/services/${s.slug}`)}
                         className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-brand-50"
                       >
                         <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-brand-gradient-soft">
-                          <s.icon className="h-5 w-5 text-brand-700" />
+                          <Icon className="h-5 w-5 text-brand-700" />
                         </span>
                         <span>
                           <span className="block text-sm font-semibold text-ink">{s.name}</span>
                           <span className="block text-xs text-muted">{s.tagline}</span>
                         </span>
                       </button>
-                    ))}
+                      );
+                    })}
                   </div>
                   <div className="mt-1 border-t border-slate-100 pt-2">
                     <button
@@ -215,16 +221,19 @@ export default function Navbar() {
               </button>
               {servicesOpen && (
                 <div className="space-y-0.5 px-2 pb-2">
-                  {SERVICES.map((s) => (
+                  {services.map((s) => {
+                    const Icon = resolveServiceIcon(s);
+                    return (
                     <button
                       key={s.slug}
                       onClick={() => go(`/services/${s.slug}`)}
                       className="flex w-full items-center gap-2.5 rounded-xl px-4 py-2.5 text-left text-sm text-white/75 transition-colors hover:bg-white/10 hover:text-white"
                     >
-                      <s.icon className="h-4 w-4 shrink-0 text-gold-300" />
+                      <Icon className="h-4 w-4 shrink-0 text-gold-300" />
                       <span>{s.name}</span>
                     </button>
-                  ))}
+                    );
+                  })}
                   <button
                     onClick={() => go('/services')}
                     className="mt-1 flex w-full items-center justify-between rounded-xl border border-white/20 px-4 py-2.5 text-left text-sm font-semibold text-gold-300 transition-colors hover:bg-white/10"

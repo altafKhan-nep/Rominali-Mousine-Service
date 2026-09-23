@@ -26,6 +26,27 @@ dotenv.config();
 
 const app = express();
 
+// Browser origins allowed to call the API. CLIENT_ORIGIN may hold a single
+// origin (also used for emailed links) — it is first in the set. The brand's
+// official domains are always allowed, and comma-separated extras can be
+// appended (e.g. Vercel preview domains). A missing Origin header (curl,
+// server-to-server) is passed through.
+const allowedOrigins = [
+  ...new Set(
+    [
+      process.env.CLIENT_ORIGIN || "http://localhost:5173",
+      "https://rominalimousineservice.com",
+      "https://www.rominalimousineservice.com",
+    ]
+      .flatMap((entry) => String(entry).split(",").map((s) => s.trim()).filter(Boolean))
+      .filter(Boolean),
+  ),
+];
+const corsOrigin = (origin, cb) => {
+  if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+  cb(null, false);
+};
+
 // Behind a reverse proxy (nginx, Render, Vercel) set TRUST_PROXY=true so
 // req.ip / rate-limit see the real client address.
 app.set("trust proxy", process.env.TRUST_PROXY === "true" ? 1 : false);
@@ -33,7 +54,7 @@ app.set("trust proxy", process.env.TRUST_PROXY === "true" ? 1 : false);
 app.use(helmet());
 app.use(
   cors({
-    origin: process.env.CLIENT_ORIGIN || "http://localhost:5173",
+    origin: corsOrigin,
     credentials: true,
   }),
 );
@@ -96,7 +117,7 @@ app.use(errorHandler);
 
 const server = createServer(app);
 const io = new Server(server, {
-  cors: { origin: process.env.CLIENT_ORIGIN || "http://localhost:5173" },
+  cors: { origin: corsOrigin },
 });
 
 app.set("io", io);
