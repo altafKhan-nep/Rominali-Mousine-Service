@@ -1,9 +1,11 @@
 import AppSetting from '../models/AppSetting.js';
 
+const fail = (message, statusCode) => Object.assign(new Error(message), { statusCode });
+
 // Key/value settings. `defaults` documents every known key so reads always
 // return a value even before an admin has touched Settings.
 const DEFAULTS = {
-  // Fare model overrides (0/null = use the built-in per-vehicle rates)
+  // Fare model overrides (null = use the built-in per-vehicle rates)
   baseFare: null,
   perKm: null,
   perMin: null,
@@ -12,6 +14,16 @@ const DEFAULTS = {
   // Support info shown in the app
   supportPhone: '(240) 351-0826',
   supportEmail: 'Rominalimo2023@gmail.com',
+};
+
+// Coerce + validate each known key so a malformed value can't corrupt the app.
+const VALIDATORS = {
+  baseFare: (v) => (v === null || v === '' ? null : Number(v)),
+  perKm: (v) => (v === null || v === '' ? null : Number(v)),
+  perMin: (v) => (v === null || v === '' ? null : Number(v)),
+  paymentsEnabled: (v) => v === true || v === 'true' || v === 1 || v === '1',
+  supportPhone: (v) => String(v).trim(),
+  supportEmail: (v) => String(v).trim(),
 };
 
 export const getSettings = async () => {
@@ -32,10 +44,19 @@ export const getPublicSettings = async () => {
 };
 
 export const updateSettings = async (patch) => {
-  const allowed = Object.keys(DEFAULTS);
   const entries = [];
-  for (const [key, value] of Object.entries(patch || {})) {
-    if (!allowed.includes(key)) continue;
+  for (const [key, raw] of Object.entries(patch || {})) {
+    if (!(key in DEFAULTS)) continue;
+    const value = VALIDATORS[key](raw);
+    if (key.endsWith('Fare') || key.startsWith('per')) {
+      if (value !== null && (!Number.isFinite(value) || value < 0)) {
+        throw fail(`${key} must be a non-negative number`, 400);
+      }
+    }
+    if (key === 'supportEmail' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      throw fail('supportEmail must be a valid email address', 400);
+    }
+    if (key === 'supportPhone' && !value) throw fail('supportPhone cannot be empty', 400);
     entries.push([key, value]);
   }
   if (!entries.length) return getSettings();

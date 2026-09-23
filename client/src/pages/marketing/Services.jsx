@@ -5,6 +5,7 @@ import { Reveal } from '../../components/ui/Reveal.jsx';
 import { Timer, BadgeDollarSign, Plane, CarFront, Phone, ArrowRight } from 'lucide-react';
 import { SERVICES } from '../../data/services.js';
 import { PHONE_TEL, PHONE_DISPLAY } from '../../data/site.js';
+import { useSiteContent } from '../../hooks/useSiteContent.js';
 
 const PROMISES = [
   { icon: Timer, title: 'On-time guaranteed', desc: 'Your chauffeur is staged and ready ahead of schedule, every single time.' },
@@ -16,6 +17,7 @@ const PROMISES = [
 export default function Services() {
   const { user } = useAuth();
   const bookUrl = user ? '/reservations' : '/login';
+  const services = useSiteContent('services', SERVICES);
 
   return (
     <div>
@@ -71,7 +73,7 @@ export default function Services() {
         </div>
 
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {SERVICES.map((s, i) => (
+          {services.map((s, i) => (
             <Reveal key={s.slug} delay={(i % 3) * 90} className="h-full">
               <Link
                 to={`/services/${s.slug}`}

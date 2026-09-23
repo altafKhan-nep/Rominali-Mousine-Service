@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Outlet, useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { LayoutDashboard, Radio, Map, CalendarDays, Users, Car, Wallet, BarChart3, LifeBuoy, Bell, ShieldCheck, Settings, Moon, Sun, Menu, X, LogOut, Phone } from 'lucide-react';
+import { LayoutDashboard, Radio, Map, CalendarDays, Users, Car, Wallet, BarChart3, LifeBuoy, Bell, ShieldCheck, Settings, Globe, Moon, Sun, Menu, X, LogOut, Phone } from 'lucide-react';
 import { useAuth } from '../../../context/AuthContext.jsx';
 
 const NAV = [
@@ -12,6 +12,7 @@ const NAV = [
   { to: '/admin/drivers', label: 'Drivers', icon: Car },
   { to: '/admin/passengers', label: 'Passengers', icon: Users },
   { to: '/admin/fleet', label: 'Fleet', icon: Car },
+  { to: '/admin/website', label: 'Website', icon: Globe },
   { to: '/admin/finance', label: 'Finance', icon: Wallet },
   { to: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
   { to: '/admin/support', label: 'Support', icon: LifeBuoy },

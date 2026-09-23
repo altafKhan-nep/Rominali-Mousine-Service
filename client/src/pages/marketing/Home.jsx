@@ -12,6 +12,8 @@ import { useMediaQuery } from '../../hooks/useMediaQuery.js';
 import { useWebGLSupport } from '../../components/three/useWebGLSupport.js';
 import { SERVICES, FEATURED_SERVICES } from '../../data/services.js';
 import { BRAND_NAME, PHONE_TEL, PHONE_DISPLAY } from '../../data/site.js';
+import { HOMECONTENT_DEFAULTS } from '../../data/homeContent.js';
+import { useSiteContent } from '../../hooks/useSiteContent.js';
 
 // Lazy-loaded so the WebGL/three bundle only downloads when the taxi actually renders.
 const HeroTaxiScene = lazy(() => import('../../components/three/HeroTaxiScene.jsx'));
@@ -152,6 +154,7 @@ const NOVA = ['Arlington', 'Alexandria', 'McLean', 'Tysons Corner', 'Reston', 'H
 export default function Home() {
   const { user } = useAuth();
   const bookUrl = user ? '/reservations' : '/login';
+  const content = useSiteContent('home', HOMECONTENT_DEFAULTS);
 
   // 3D taxi: hidden on mobile and when WebGL is unavailable; tablets get a compact variant.
   const isMobile = useMediaQuery('(max-width: 767px)');
@@ -175,23 +178,22 @@ export default function Home() {
             <div className="relative z-10">
               <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-medium uppercase tracking-wider text-white/85 backdrop-blur">
                 <span className="h-2 w-2 animate-pulse rounded-full bg-gold-400" />
-                Maryland · Virginia · Washington DC · Baltimore
+                {content.hero.eyebrow}
               </span>
 
               <h1 className="mt-6 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-                Experience the <span className="text-gold-300">pinnacle</span> of private travel
+                {content.hero.title1} <span className="text-gold-300">{content.hero.titleAccent}</span>{' '}
+                {content.hero.title2}
               </h1>
 
               <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/80">
-                An elite, late-model private fleet of luxury sedans, premium SUVs and executive
-                Sprinters with an absolute punctuality guarantee — seamless airport transfers to
-                BWI, Dulles (IAD) and Reagan National (DCA).
+                {content.hero.subtitle}
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Link to={bookUrl}>
                   <Button size="lg" className="bg-white !text-brand-900 shadow-xl hover:bg-brand-50">
-                    Book your ride online
+                    {content.hero.cta}
                   </Button>
                 </Link>
                 <a
@@ -415,11 +417,10 @@ export default function Home() {
           <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
             <div className="max-w-lg">
               <h2 className="text-2xl font-bold text-white sm:text-3xl">
-                Immaculate vehicles. Professional chauffeurs. Every single time.
+                {content.banner.title}
               </h2>
               <p className="mt-3 text-sm text-white/80 sm:text-base">
-                Late-model luxury vehicles maintained to flawless aesthetic standards and detailed
-                comprehensively before every dispatch — sanitized five-star comfort, guaranteed.
+                {content.banner.text}
               </p>
               <Link
                 to="/fleet"

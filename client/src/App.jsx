@@ -41,6 +41,7 @@ const SupportPage = lazy(() => import('./modules/crm/features/support/SupportPag
 const NotificationsPage = lazy(() => import('./modules/crm/features/notifications/NotificationsPage.tsx'));
 const AuditPage = lazy(() => import('./modules/crm/features/audit/AuditPage.tsx'));
 const SettingsPage = lazy(() => import('./modules/crm/features/settings/SettingsPage.tsx'));
+const WebsitePage = lazy(() => import('./modules/crm/features/website/WebsitePage.tsx'));
 const DriverShell = lazy(() => import('./modules/driver/layout/DriverShell.tsx'));
 const DriverDashboardPage = lazy(() => import('./modules/driver/features/dashboard/DashboardPage.tsx'));
 const DriverRequestsPage = lazy(() => import('./modules/driver/features/requests/RequestsPage.tsx'));
@@ -103,6 +104,7 @@ export default function App() {
             <Route path="drivers" element={<DriversPage />} />
             <Route path="passengers" element={<PassengersPage />} />
             <Route path="fleet" element={<FleetPage />} />
+            <Route path="website" element={<WebsitePage />} />
             <Route path="finance" element={<FinancePage />} />
             <Route path="analytics" element={<AnalyticsPage />} />
             <Route path="support" element={<SupportPage />} />

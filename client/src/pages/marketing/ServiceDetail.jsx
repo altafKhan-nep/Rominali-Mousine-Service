@@ -3,14 +3,17 @@ import { Phone, Check, Star, ArrowRight } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { Button } from '../../components/ui/Button.jsx';
 import { Reveal } from '../../components/ui/Reveal.jsx';
-import { SERVICES, getService } from '../../data/services.js';
+import { SERVICES } from '../../data/services.js';
 import { PHONE_TEL, PHONE_DISPLAY } from '../../data/site.js';
+import { useSiteContent } from '../../hooks/useSiteContent.js';
 
 export default function ServiceDetail() {
   const { slug } = useParams();
   const { user } = useAuth();
   const bookUrl = user ? '/reservations' : '/login';
-  const service = getService(slug);
+  const services = useSiteContent('services', SERVICES);
+  const service = services.find((s) => s.slug === slug);
+  const others = services.filter((s) => s.slug !== slug);
 
   if (!service) {
     return (
@@ -22,8 +25,6 @@ export default function ServiceDetail() {
       </div>
     );
   }
-
-  const others = SERVICES.filter((s) => s.slug !== service.slug);
 
   return (
     <div>

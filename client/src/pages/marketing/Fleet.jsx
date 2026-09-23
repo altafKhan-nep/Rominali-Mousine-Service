@@ -4,39 +4,8 @@ import { useAuth } from '../../context/AuthContext.jsx';
 import { Button } from '../../components/ui/Button.jsx';
 import { Reveal } from '../../components/ui/Reveal.jsx';
 import { BRAND_NAME, PHONE_TEL, PHONE_DISPLAY } from '../../data/site.js';
-
-const FLEET = [
-  {
-    img: '/images/executive-sedan.jpg',
-    name: 'Executive Sedan',
-    tag: 'First Class',
-    passengers: '3 Passengers',
-    luggage: '3 Luggages',
-    perks: ['Free Wi-Fi', 'Climate Zone'],
-    tagline: 'Mercedes-Benz S-Class standard of comfort',
-    features: ['Mercedes-Benz S-Class configuration', 'Climate-controlled zones', 'Complimentary bottled water', 'Professional chauffeur in uniform'],
-  },
-  {
-    img: '/images/premium-suv.jpg',
-    name: 'Cadillac Escalade Platinum Luxury ESV',
-    tag: 'Platinum Luxury SUV',
-    passengers: '6 Passengers',
-    luggage: '6 Luggages',
-    perks: ['Onboard Wi-Fi', 'Refreshments'],
-    tagline: 'The pinnacle of chauffeur-driven comfort',
-    features: ['Platinum luxury ESV, 1–6 passengers', 'Spacious for corporate luggage', 'Climate controlled with water', 'Elite safety standards', 'Perfect for executive & diplomatic missions'],
-  },
-  {
-    img: '/images/van.jpg',
-    name: 'Mercedes Executive Sprinter',
-    tag: 'Group Travel',
-    passengers: '14 Passengers',
-    luggage: '14 Luggages',
-    perks: ['USB Outlets', 'Media System'],
-    tagline: 'High-occupancy executive group travel',
-    features: ['Seats up to 14 with luggage capacity', 'USB outlets throughout', 'Onboard media system', 'Extended rear cargo configuration', 'Professional chauffeur in uniform'],
-  },
-];
+import { FLEET } from '../../data/fleet.js';
+import { useSiteContent } from '../../hooks/useSiteContent.js';
 
 const AMENITIES = [
   { icon: Wifi, label: 'Onboard Wi-Fi' },
@@ -48,6 +17,7 @@ const AMENITIES = [
 export default function Fleet() {
   const { user } = useAuth();
   const bookUrl = user ? '/reservations' : '/login';
+  const vehicles = useSiteContent('fleet', FLEET);
 
   return (
     <div>
@@ -89,7 +59,7 @@ export default function Fleet() {
       {/* ============ FLEET GRID ============ */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {FLEET.map((v, i) => (
+          {vehicles.map((v, i) => (
             <Reveal key={v.name} delay={(i % 3) * 90}>
               <div className="card-lift group flex h-full flex-col overflow-hidden rounded-3xl border border-slate-200/70 bg-white">
                 <div className="img-zoom relative">

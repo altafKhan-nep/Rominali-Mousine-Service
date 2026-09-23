@@ -6,6 +6,9 @@ import Location from '../models/Location.js';
 import RefreshToken from '../models/RefreshToken.js';
 import { getSettings, updateSettings } from '../services/settingsService.js';
 import * as rideService from '../services/rideService.js';
+import * as adminRideService from '../services/adminRideService.js';
+import * as adminUserService from '../services/adminUserService.js';
+import * as contentService from '../services/contentService.js';
 import { notify } from '../services/notificationService.js';
 
 const ioOf = (req) => req.app.get('io');
@@ -217,4 +220,51 @@ export const settings = asyncHandler(async (req, res) => {
 // PATCH /api/admin/settings
 export const updateAppSettings = asyncHandler(async (req, res) => {
   res.json({ settings: await updateSettings(req.body) });
+});
+
+// ----------------------- Content (CMS) -----------------------
+
+// GET /api/admin/content — all stored site-content blocks
+export const listContent = asyncHandler(async (req, res) => {
+  res.json({ content: await contentService.getContentMap() });
+});
+
+// PATCH /api/admin/content — body { key, value }; value null clears the block
+export const updateContent = asyncHandler(async (req, res) => {
+  const { key, value } = req.body || {};
+  const saved = await contentService.setContent(key, value);
+  res.json({ key, value: saved });
+});
+
+// ----------------------- User management -----------------------
+
+// POST /api/admin/users — create a passenger or driver
+export const createUser = asyncHandler(async (req, res) => {
+  res.status(201).json({ user: await adminUserService.createUser(req.body) });
+});
+
+// PATCH /api/admin/users/:id — full user/driver edit
+export const updateUser = asyncHandler(async (req, res) => {
+  res.json({ user: await adminUserService.updateUser(req.params.id, req.body) });
+});
+
+// ----------------------- Ride management -----------------------
+
+// PATCH /api/admin/rides/:id — cancel / complete / re-open / adjust fare
+export const updateRide = asyncHandler(async (req, res) => {
+  const ride = await adminRideService.adminUpdateRide(req.params.id, req.body);
+  const io = req.app.get('io');
+  io?.to(`ride:${ride._id}`).emit('ride:update', { ride, status: ride.status });
+  io?.to('admins').emit('ride:update', { ride, status: ride.status });
+  if (ride.passenger) {
+    await notify({
+      user: ride.passenger._id,
+      type: 'ride',
+      title: 'Ride updated by dispatch',
+      message: `Your ride is now "${ride.status.replace('_', ' ')}".`,
+      data: { rideId: ride._id },
+      io,
+    }).catch(() => {});
+  }
+  res.json({ ride });
 });
