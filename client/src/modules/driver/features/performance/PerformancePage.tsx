@@ -1,0 +1,11 @@
+import { Card, CardTitle } from '../../components/ui/card';
+import { TrendingUp, Clock, CheckCircle, Award } from 'lucide-react';
+export default function PerformancePage(){
+  const stats = [
+    { k:'Acceptance Rate', v:'98.2%', d:'Excellent • Top 10%', icon: CheckCircle, color:'text-green-600' },
+    { k:'Cancellation Rate', v:'1.1%', d:'Low • Keep <2%', icon: TrendingUp, color:'text-amber-600' },
+    { k:'Response Time', v:'12s', d:'Fast • Avg 18s', icon: Clock, color:'text-brand-600' },
+    { k:'On-Time Arrival', v:'99%', d:'Elite • 99.5% target', icon: Award, color:'text-gold-600' },
+  ];
+  return (<div className="space-y-6"><h1 className="font-display text-2xl font-bold dark:text-white">Performance</h1><div className="grid gap-4 sm:grid-cols-4">{stats.map(s=> <Card key={s.k}><div className="flex items-center gap-2"><s.icon className={`h-4 w-4 ${s.color}`} /><p className="text-xs uppercase tracking-widest text-muted">{s.k}</p></div><p className="font-display mt-2 text-2xl font-bold dark:text-white">{s.v}</p><p className="text-xs text-muted">{s.d}</p><div className="mt-2 h-1.5 rounded-full bg-accent-100 dark:bg-white/5"><div className="h-full rounded-full bg-brand-600" style={{width: s.v.includes('%') ? s.v : '80%'}} /></div></Card>)}</div><div className="grid gap-6 lg:grid-cols-2"><Card><CardTitle>Leaderboard • Howard County</CardTitle><p className="mt-2 text-sm text-muted">Ranked #12 of 84 drivers • Top 15% this month</p><div className="mt-4 space-y-2">{[1,2,3,12].map(rank=> <div key={rank} className={`flex items-center justify-between rounded-2xl p-3 ${rank===12?'bg-brand-50 ring-1 ring-brand-200 dark:bg-brand-950':'bg-accent-50 dark:bg-white/5'}`}><span className="font-bold">#{rank} {rank===12?'(You)':''}</span><span className="text-sm">Driver ${rank} • 4.9★</span></div>)}</div></Card><Card><CardTitle>Badges • Achievements</CardTitle><p className="text-sm text-muted">Earn by completing milestones</p><div className="mt-3 grid grid-cols-4 gap-3">{[{e:'🏆',l:'500 Rides'},{e:'✈️',l:'Airport Pro'},{e:'🌙',l:'Night Owl'},{e:'⭐',l:'5-Star Streak'}].map(b=> <div key={b.l} className="text-center"><span className="grid h-14 w-14 mx-auto place-items-center rounded-2xl bg-brand-50 text-2xl dark:bg-white/5">{b.e}</span><p className="mt-1 text-xs font-medium dark:text-white">{b.l}</p></div>)}</div></Card></div></div>);
+}

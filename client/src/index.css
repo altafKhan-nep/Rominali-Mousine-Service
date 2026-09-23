@@ -1,0 +1,335 @@
+@import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Romina Limousine Service Design Tokens
+ * Professional red + black + gold palette (user-chosen) — RED-led:
+ *   - Deep Red #C62828 = MAIN BRAND color: nav, hero, footer, bands, CTAs
+ *   - Bright Red #E53935 = CTA, hover, attention
+ *   - Midnight Black #0B0D0F = text + small contrast accents (never primary)
+ *   - Off White #F8F9FA = main background
+ *   - Cool Gray #667085 = secondary text
+ *   - Warm Gold #F4B942 = premium highlights / ratings / hero accent words
+ * Keep token NAMES stable (brand-*, accent-*) so component classes never change.
+ */
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Fraunces', 'Georgia', 'Times New Roman', serif;
+
+  /* brand-* = the RED primary scale (deep red heart, darker at the deep end) */
+  --color-brand-50: #fdf5f5;
+  --color-brand-100: #fbeaea;
+  --color-brand-200: #f6d2d1;
+  --color-brand-300: #eeaaa8;
+  --color-brand-400: #e26a68;
+  --color-brand-500: #e53935;
+  --color-brand-600: #d7332f;
+  --color-brand-700: #c62828;
+  --color-brand-800: #a11c1c;
+  --color-brand-900: #7a1414;
+  --color-brand-950: #57100f;
+
+  /* accent-* = neutral blacks/grays for contrast, text, secondary UI */
+  --color-accent-50: #f7f7f8;
+  --color-accent-100: #ececee;
+  --color-accent-200: #d9d9dd;
+  --color-accent-300: #b9b9c0;
+  --color-accent-400: #8f8f9a;
+  --color-accent-500: #667085;
+  --color-accent-600: #4b5560;
+  --color-accent-700: #3a424c;
+  --color-accent-800: #232830;
+  --color-accent-900: #0b0d0f;
+
+  /* gold-* = premium highlights / ratings / hero accent words */
+  --color-gold-50: #fdf9ec;
+  --color-gold-100: #faf0cd;
+  --color-gold-200: #f5df9c;
+  --color-gold-300: #efc964;
+  --color-gold-400: #f4b942;
+  --color-gold-500: #eaa82b;
+  --color-gold-600: #cf8d1c;
+  --color-gold-700: #a86d16;
+
+  --color-surface: #ffffff;
+  --color-ink: #0b0d0f;
+  --color-muted: #667085;
+  --color-paper: #f8f9fa;
+}
+
+html.dark {
+  --color-paper: #0b0d0f;
+  --color-ink: #f8f9fa;
+  --color-muted: #8f8f9a;
+  --color-surface: #15181c;
+}
+.dark body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background: var(--color-paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+/* ---- Brand gradient helpers (premium surfaces) ---- */
+.bg-brand-gradient {
+  background: linear-gradient(150deg, var(--color-brand-800) 0%, var(--color-brand-900) 55%, var(--color-brand-950) 100%);
+}
+
+.bg-brand-gradient-soft {
+  background: linear-gradient(135deg, #ffffff 0%, #fdf6f6 55%, #f7eaea 100%);
+}
+
+.btn-brand-gradient {
+  background: linear-gradient(180deg, var(--color-brand-500) 0%, var(--color-brand-700) 100%);
+  box-shadow: 0 1px 2px rgba(87, 16, 15, 0.3), 0 10px 24px -12px rgba(198, 40, 40, 0.55);
+}
+.btn-brand-gradient:hover {
+  background: linear-gradient(180deg, var(--color-brand-400) 0%, var(--color-brand-600) 100%);
+}
+
+.text-brand-gradient {
+  background: linear-gradient(120deg, var(--color-brand-700), var(--color-brand-500));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---- Inputs: pill shape (Uber-style touch targets) ---- */
+.input-pill {
+  border-radius: 9999px;
+}
+
+/* ---- Leaflet overrides so the map matches the palette ---- */
+.leaflet-container {
+  font-family: inherit;
+}
+
+.leaflet-control-zoom a {
+  color: var(--color-ink);
+}
+
+/* Map pins -------------------------------------------------------------- */
+.map-pin {
+  position: relative;
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+  border: 2px solid #ffffff;
+}
+
+.map-pin span {
+  transform: rotate(45deg);
+  font-size: 12px;
+  line-height: 1;
+  color: #fff;
+}
+
+.map-pin-pickup {
+  background: var(--color-brand-600); /* red = pickup */
+}
+
+/* Circular green start marker (pickup) */
+.map-pin-start {
+  display: grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  border-radius: 50%;
+  background: #10b981;
+  border: 3px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.map-pin-start span {
+  font-size: 11px;
+  line-height: 1;
+  color: #fff;
+}
+
+.map-pin-dropoff {
+  background: var(--color-brand-700); /* red = destination */
+}
+
+.map-pin-driver {
+  background: var(--color-brand-600);
+  animation: pin-pulse 1.6s infinite;
+}
+
+.map-pin-driver span {
+  font-size: 14px;
+}
+
+/* Live passenger marker (blue) on the driver's ride map */
+.map-pin-passenger {
+  background: #2563eb;
+  border: 2px solid #ffffff;
+}
+
+.map-pin-passenger span {
+  font-size: 14px;
+}
+
+/* "You are here" blue dot on the booking map */
+.map-pin-user {
+  position: relative;
+  display: grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  border-radius: 50%;
+  background: #2563eb;
+  border: 3px solid #ffffff;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.22), 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+.map-pin-user::after {
+  content: '';
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+  border: 2px solid rgba(37, 99, 235, 0.45);
+  animation: user-pulse 2s ease-out infinite;
+}
+
+@keyframes user-pulse {
+  0% {
+    transform: scale(0.55);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Nearby idle vehicles on the booking map */
+.map-pin-vehicle {
+  background: #ffffff;
+  border: 2px solid var(--color-brand-600);
+  width: 32px;
+  height: 32px;
+}
+
+.map-pin-vehicle span {
+  font-size: 15px;
+  color: var(--color-brand-600);
+}
+
+/* Lucide SVG icons inside map pins */
+.map-pin span svg,
+.map-pin-vehicle span svg {
+  display: block;
+  width: auto;
+  height: 1em;
+}
+
+@keyframes pin-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.45), 0 2px 8px rgba(0, 0, 0, 0.28);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(217, 119, 6, 0), 0 2px 8px rgba(0, 0, 0, 0.28);
+  }
+}
+
+/* Subtle fade-in for cards */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rise-in {
+  animation: rise-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Animated cards: layered depth at rest, gentle float on hover */
+.card-lift {
+  box-shadow:
+    0 1px 2px rgba(24, 24, 28, 0.04),
+    0 10px 30px -18px rgba(24, 24, 28, 0.18);
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease;
+}
+.card-lift:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 2px 4px rgba(24, 24, 28, 0.05),
+    0 28px 52px -22px rgba(24, 24, 28, 0.32);
+}
+
+/* Scroll-reveal (paired with <Reveal>) */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Image zoom on hover for media cards */
+.img-zoom {
+  overflow: hidden;
+}
+.img-zoom img {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.img-zoom:hover img {
+  transform: scale(1.05);
+}
+
+/* ---- 3D taxi hero ---- */
+.taxi-fade-in {
+  animation: taxi-fade 1.3s ease-out 0.15s both;
+}
+
+@keyframes taxi-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .taxi-fade-in {
+    animation: none;
+    opacity: 1;
+  }
+}
