@@ -7,9 +7,9 @@ import { BRAND_NAME, PHONE_TEL, PHONE_DISPLAY } from '../../data/site.js';
 
 const FLEET = [
   {
-    img: '/images/ececutive-sedan.png',
+    img: '/images/executive-sedan.jpg',
     name: 'Executive Sedan',
-    model: 'First class — the global benchmark for executive road travel',
+    tag: 'First Class',
     passengers: '3 Passengers',
     luggage: '3 Luggages',
     perks: ['Free Wi-Fi', 'Climate Zone'],
@@ -17,9 +17,9 @@ const FLEET = [
     features: ['Mercedes-Benz S-Class configuration', 'Climate-controlled zones', 'Complimentary bottled water', 'Professional chauffeur in uniform'],
   },
   {
-    img: '/images/premium-suv.png',
+    img: '/images/premium-suv.jpg',
     name: 'Cadillac Escalade Platinum Luxury ESV',
-    model: 'Platinum luxury ESV — unmatched road presence and space',
+    tag: 'Platinum Luxury SUV',
     passengers: '6 Passengers',
     luggage: '6 Luggages',
     perks: ['Onboard Wi-Fi', 'Refreshments'],
@@ -27,9 +27,9 @@ const FLEET = [
     features: ['Platinum luxury ESV, 1–6 passengers', 'Spacious for corporate luggage', 'Climate controlled with water', 'Elite safety standards', 'Perfect for executive & diplomatic missions'],
   },
   {
-    img: '/images/Van.png',
+    img: '/images/van.jpg',
     name: 'Mercedes Executive Sprinter',
-    model: 'Tailored for corporate offsites, roadshows, and group events',
+    tag: 'Group Travel',
     passengers: '14 Passengers',
     luggage: '14 Luggages',
     perks: ['USB Outlets', 'Media System'],
@@ -91,35 +91,37 @@ export default function Fleet() {
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {FLEET.map((v, i) => (
             <Reveal key={v.name} delay={(i % 3) * 90}>
-              <div className="card-lift group flex h-full flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-                <div className="img-zoom relative bg-gradient-to-b from-brand-50 to-white">
+              <div className="card-lift group flex h-full flex-col overflow-hidden rounded-3xl border border-slate-200/70 bg-white">
+                <div className="img-zoom relative">
                   <img
                     src={v.img}
                     alt={`${v.name} — ${BRAND_NAME}`}
-                    className="h-52 w-full object-contain p-4"
+                    className="h-60 w-full object-cover"
                     loading="lazy"
                   />
-                  <span className="absolute left-4 top-4 rounded-full bg-brand-gradient px-3 py-1 text-xs font-semibold text-white">
-                    {v.model}
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+                  <span className="absolute left-4 top-4 rounded-full bg-black/45 px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-gold-300 ring-1 ring-white/25 backdrop-blur">
+                    {v.tag}
                   </span>
+                  <div className="absolute inset-x-5 bottom-4">
+                    <h3 className="text-xl font-bold text-white drop-shadow">{v.name}</h3>
+                  </div>
                 </div>
                 <div className="flex flex-1 flex-col p-7">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <h3 className="text-xl font-bold text-ink">{v.name}</h3>
-                  </div>
-                  <p className="mt-1 text-sm font-medium text-brand-600">{v.tagline}</p>
+                  <p className="text-sm leading-relaxed text-muted">{v.tagline}</p>
 
-                  <div className="mt-4 grid grid-cols-2 gap-2">
-                    <span className="flex items-center gap-2 rounded-xl bg-brand-50 px-3 py-2 text-xs font-semibold text-brand-800">
-                      <Users className="h-4 w-4" /> {v.passengers}
+                  <div className="mt-4 flex flex-wrap items-center gap-2">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-3 py-1.5 text-xs font-semibold text-brand-800 ring-1 ring-brand-100">
+                      <Users className="h-3.5 w-3.5 text-brand-600" /> {v.passengers}
                     </span>
-                    <span className="flex items-center gap-2 rounded-xl bg-brand-50 px-3 py-2 text-xs font-semibold text-brand-800">
-                      <Luggage className="h-4 w-4" /> {v.luggage}
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-3 py-1.5 text-xs font-semibold text-brand-800 ring-1 ring-brand-100">
+                      <Luggage className="h-3.5 w-3.5 text-brand-600" /> {v.luggage}
                     </span>
-                  </div>
-                  <div className="mt-3 flex flex-wrap gap-2">
                     {v.perks.map((p) => (
-                      <span key={p} className="rounded-full border border-gold-300 bg-gold-50 px-3 py-1 text-xs font-semibold text-gold-700">
+                      <span
+                        key={p}
+                        className="inline-flex items-center gap-1.5 rounded-full border border-gold-300/70 bg-gold-50 px-3 py-1.5 text-xs font-semibold text-gold-700"
+                      >
                         {p}
                       </span>
                     ))}
@@ -134,7 +136,7 @@ export default function Fleet() {
                     ))}
                   </ul>
                   <div className="mt-6 flex-1" />
-                  <div className="flex gap-3">
+                  <div className="flex gap-3 border-t border-slate-100 pt-5">
                     <Link to={bookUrl} className="flex-1">
                       <Button className="w-full">Book this vehicle</Button>
                     </Link>

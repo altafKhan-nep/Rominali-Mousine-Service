@@ -405,7 +405,7 @@ export default function Home() {
       {/* ============ IMAGE BAND ============ */}
       <section className="relative overflow-hidden">
         <img
-          src="/images/ececutive-sedan.png"
+          src="/images/executive-sedan.jpg"
           alt="Romina Limousine Service executive sedan"
           className="h-72 w-full object-cover sm:h-96"
           loading="lazy"

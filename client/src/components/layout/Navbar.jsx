@@ -51,7 +51,12 @@ export default function Navbar() {
   return (
     <header className="bg-brand-gradient sticky top-0 z-[1001] shadow-md">
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
-        <Link to="/" onClick={() => setOpen(false)} className="flex items-center gap-2">
+        <Link to="/" onClick={() => setOpen(false)} className="flex items-center gap-2.5">
+          <img
+            src="/logo.png"
+            alt="Romina Limousine Service logo"
+            className="h-9 w-auto drop-shadow"
+          />
           <span className="text-lg font-bold tracking-tight text-white sm:text-xl">
             Romina <span className="text-gold-300">Limousine</span>
           </span>

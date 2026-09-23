@@ -17,8 +17,11 @@ export default function Footer() {
     <footer className="mt-auto bg-brand-gradient text-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-4">
         <div>
-          <div className="text-lg font-bold text-white">
-            Romina <span className="text-gold-300">Limousine Service</span>
+          <div className="flex items-center gap-2.5">
+            <img src="/logo.png" alt={BRAND_NAME} className="h-10 w-auto drop-shadow" />
+            <div className="text-lg font-bold text-white">
+              Romina <span className="text-gold-300">Limousine Service</span>
+            </div>
           </div>
           <p className="mt-3 text-sm leading-relaxed text-white/75">
             Setting the gold standard in premium private travel — bespoke airport transfers, elite
