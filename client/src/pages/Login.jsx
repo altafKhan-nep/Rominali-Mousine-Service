@@ -69,6 +69,7 @@ export default function Login() {
           <Input
             label="Password"
             type="password"
+            showToggle
             required
             autoComplete="current-password"
             value={form.password}

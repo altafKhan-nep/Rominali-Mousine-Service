@@ -59,6 +59,7 @@ export default function ResetPassword() {
             <Input
               label="New password"
               type="password"
+              showToggle
               required
               autoComplete="new-password"
               value={form.password}
@@ -67,6 +68,7 @@ export default function ResetPassword() {
             <Input
               label="Confirm new password"
               type="password"
+              showToggle
               required
               autoComplete="new-password"
               value={form.confirm}

@@ -89,6 +89,7 @@ export default function Register() {
           <Input
             label="Password"
             type="password"
+            showToggle
             required
             value={form.password}
             onChange={set('password')}

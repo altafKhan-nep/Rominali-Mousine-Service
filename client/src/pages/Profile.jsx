@@ -201,6 +201,7 @@ export default function Profile() {
         <Input
           label="Current password"
           type="password"
+          showToggle
           autoComplete="current-password"
           value={pw.currentPassword}
           onChange={(e) => setPw({ ...pw, currentPassword: e.target.value })}
@@ -210,6 +211,7 @@ export default function Profile() {
           <Input
             label="New password"
             type="password"
+            showToggle
             autoComplete="new-password"
             value={pw.newPassword}
             onChange={(e) => setPw({ ...pw, newPassword: e.target.value })}
@@ -218,6 +220,7 @@ export default function Profile() {
           <Input
             label="Confirm new password"
             type="password"
+            showToggle
             autoComplete="new-password"
             value={pw.confirm}
             onChange={(e) => setPw({ ...pw, confirm: e.target.value })}
