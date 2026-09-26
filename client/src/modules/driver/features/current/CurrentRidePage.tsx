@@ -111,7 +111,7 @@ export default function CurrentRidePage() {
               <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
               <Marker position={[active.pickup.lat, active.pickup.lng]} icon={pickupIcon}><Popup>Pickup</Popup></Marker>
               <Marker position={[active.dropoff.lat, active.dropoff.lng]} icon={dropoffFlagIcon}><Popup>Dropoff</Popup></Marker>
-              <Polyline positions={[[active.pickup.lat,active.pickup.lng],[active.dropoff.lat,active.dropoff.lng]] as any} pathOptions={{color:'#c62828', weight:5, opacity:0.9}} />
+              <Polyline positions={[[active.pickup.lat,active.pickup.lng],[active.dropoff.lat,active.dropoff.lng]] as any} pathOptions={{color:'#d4af37', weight:5, opacity:0.9}} />
             </MapContainer>
             <div className="flex items-center gap-2 bg-white px-4 py-2.5 text-xs dark:bg-accent-900 border-t border-accent-200 dark:border-white/10">
               <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-green-500" /> Pickup</span>

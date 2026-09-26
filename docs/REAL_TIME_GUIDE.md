@@ -166,7 +166,7 @@ are fresh (see Pitfall #3).
 | Concern | Library | Notes |
 |---------|---------|-------|
 | Real-time transport | `socket.io` (server) + `socket.io-client` (client) | Rooms `user:{id}`, `drivers`, `admins`, `ride:{rideId}`; auth via handshake `auth`. |
-| Maps | `leaflet` + `react-leaflet` + OpenStreetMap tiles | Free, no API key. Pins are inline SVG strings (`pinIcons.js`), route polyline is `#c62828`. |
+| Maps | `leaflet` + `react-leaflet` + OpenStreetMap tiles | Free, no API key. Pins are inline SVG strings (`pinIcons.js`), route polyline is `#d4af37` (gold). |
 | Routing / distance | OSRM (`router.project-osrm.org`) | Returns distance/duration/polyline used for fares + driver ETA. |
 | Geocoding | Nominatim | Autocomplete in `LocationSearch`; 1 req/s rate limit, set a `User-Agent`. |
 | Browser geolocation | `useGeolocation` hook | Wraps `navigator.geolocation`; resolves on mount. |

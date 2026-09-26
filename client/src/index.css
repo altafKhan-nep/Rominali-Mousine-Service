@@ -3,31 +3,31 @@
 
 /*
  * Romina Limousine Service Design Tokens
- * Professional red + black + gold palette (user-chosen) — RED-led:
- *   - Deep Red #C62828 = MAIN BRAND color: nav, hero, footer, bands, CTAs
- *   - Bright Red #E53935 = CTA, hover, attention
- *   - Midnight Black #0B0D0F = text + small contrast accents (never primary)
- *   - Off White #F8F9FA = main background
- *   - Cool Gray #667085 = secondary text
- *   - Warm Gold #F4B942 = premium highlights / ratings / hero accent words
+ * Premium navy + metallic gold palette (mirrors rominalimousineservice.com):
+ *   - Deep Navy #0B132B = MAIN BRAND surface: navbar, heroes, bands, footer, panels
+ *   - Midnight #050914 = deepest band/base (static at the deep end)
+ *   - Metallic Gold #D4AF37 = CTA, hover, attention, chips, live dots
+ *   - Space Navy #1C2541 = text accents + small contrast on light
+ *   - Off White #FBF6E8 = light warm background wash
+ *   - Deep Gold #A86D16 = secondary text on gold
  * Keep token NAMES stable (brand-*, accent-*) so component classes never change.
  */
 @theme {
   --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-display: 'Fraunces', 'Georgia', 'Times New Roman', serif;
 
-  /* brand-* = the RED primary scale (deep red heart, darker at the deep end) */
-  --color-brand-50: #fdf5f5;
-  --color-brand-100: #fbeaea;
-  --color-brand-200: #f6d2d1;
-  --color-brand-300: #eeaaa8;
-  --color-brand-400: #e26a68;
-  --color-brand-500: #e53935;
-  --color-brand-600: #d7332f;
-  --color-brand-700: #c62828;
-  --color-brand-800: #a11c1c;
-  --color-brand-900: #7a1414;
-  --color-brand-950: #57100f;
+  /* brand-* = the PRIMARY scale (metallic gold heart, deep navy at the dark end) */
+  --color-brand-50: #fbf6e8;
+  --color-brand-100: #f6ecd3;
+  --color-brand-200: #eedaad;
+  --color-brand-300: #e1c47e;
+  --color-brand-400: #d4af37;
+  --color-brand-500: #c9a227;
+  --color-brand-600: #1c2541;
+  --color-brand-700: #0b132b;
+  --color-brand-800: #080d1e;
+  --color-brand-900: #060a17;
+  --color-brand-950: #050914;
 
   /* accent-* = neutral blacks/grays for contrast, text, secondary UI */
   --color-accent-50: #f7f7f8;
@@ -50,6 +50,16 @@
   --color-gold-500: #eaa82b;
   --color-gold-600: #cf8d1c;
   --color-gold-700: #a86d16;
+
+  /* navy-* = deep premium navy (live-site header/hero palette: #0B132B → #050914) */
+  --color-navy-300: #7d8db4;
+  --color-navy-400: #4c5d84;
+  --color-navy-500: #1c2541;
+  --color-navy-600: #141c33;
+  --color-navy-700: #0b132b;
+  --color-navy-800: #080d1e;
+  --color-navy-900: #060a17;
+  --color-navy-950: #050914;
 
   --color-surface: #ffffff;
   --color-ink: #0b0d0f;
@@ -92,26 +102,57 @@ h6 {
 
 /* ---- Brand gradient helpers (premium surfaces) ---- */
 .bg-brand-gradient {
-  background: linear-gradient(150deg, var(--color-brand-800) 0%, var(--color-brand-900) 55%, var(--color-brand-950) 100%);
+  background: linear-gradient(165deg, var(--color-brand-600) 0%, var(--color-brand-800) 45%, var(--color-brand-950) 100%);
 }
 
 .bg-brand-gradient-soft {
   background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-brand-50) 55%, var(--color-brand-100) 100%);
 }
 
+/* Primary CTA button = metallic gold with navy text */
 .btn-brand-gradient {
-  background: linear-gradient(180deg, var(--color-brand-500) 0%, var(--color-brand-700) 100%);
-  box-shadow: 0 1px 2px rgba(87, 16, 15, 0.3), 0 10px 24px -12px rgba(198, 40, 40, 0.55);
+  background: linear-gradient(180deg, #f2d478 0%, var(--color-brand-400) 35%, #b8860b 100%);
+  color: var(--color-navy-950);
+  box-shadow:
+    0 1px 2px rgba(5, 9, 20, 0.3),
+    0 10px 24px -12px rgba(212, 175, 55, 0.55);
 }
 .btn-brand-gradient:hover {
-  background: linear-gradient(180deg, var(--color-brand-400) 0%, var(--color-brand-600) 100%);
+  background: linear-gradient(180deg, #f7dd90 0%, #e3c24f 40%, #c69b1d 100%);
+  box-shadow: 0 12px 28px -12px rgba(212, 175, 55, 0.7);
 }
 
+/* Emphasis / accent keywords on light sections: navy → gold sheen */
 .text-brand-gradient {
-  background: linear-gradient(120deg, var(--color-brand-700), var(--color-brand-500));
+  background: linear-gradient(120deg, var(--color-brand-700), var(--color-brand-400));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+/* ---- Navy + gold premium (live-site header/hero palette) ---- */
+.bg-navy-gradient {
+  background: linear-gradient(165deg, var(--color-navy-600) 0%, var(--color-navy-800) 45%, var(--color-navy-950) 100%);
+}
+
+/* Metallic gold gradient text (white → gold → deep gold), like the live hero */
+.text-gold-gradient {
+  background: linear-gradient(120deg, #ffffff 0%, #f3e5ab 35%, #d4af37 65%, #b8860b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Metallic gold gradient button (btn-gold) with molten hover */
+.bg-gold-gradient {
+  background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+  box-shadow:
+    0 1px 2px rgba(5, 9, 20, 0.3),
+    0 10px 26px -14px rgba(212, 175, 55, 0.6);
+}
+.bg-gold-gradient:hover {
+  background: linear-gradient(135deg, #e3c24f 0%, #c69b1d 100%);
+  box-shadow: 0 14px 32px -14px rgba(212, 175, 55, 0.75);
 }
 
 /* ---- Inputs: pill shape (Uber-style touch targets) ---- */
@@ -199,7 +240,7 @@ h6 {
 }
 
 .map-pin-pickup {
-  background: var(--color-brand-600); /* red = pickup */
+  background: #d7332f; /* functional red kept — pickup */
 }
 
 /* Circular green start marker (pickup) */
@@ -221,11 +262,11 @@ h6 {
 }
 
 .map-pin-dropoff {
-  background: var(--color-brand-700); /* red = destination */
+  background: #a11c1c; /* functional red kept — dropoff */
 }
 
 .map-pin-driver {
-  background: var(--color-brand-600);
+  background: #c62828; /* functional red kept — driver */
   animation: pin-pulse 1.6s infinite;
 }
 
@@ -279,14 +320,14 @@ h6 {
 /* Nearby idle vehicles on the booking map */
 .map-pin-vehicle {
   background: #ffffff;
-  border: 2px solid var(--color-brand-600);
+  border: 2px solid #c62828; /* functional red kept — idle vehicle */
   width: 32px;
   height: 32px;
 }
 
 .map-pin-vehicle span {
   font-size: 15px;
-  color: var(--color-brand-600);
+  color: #c62828;
 }
 
 /* Lucide SVG icons inside map pins */
@@ -363,23 +404,4 @@ h6 {
   transform: scale(1.05);
 }
 
-/* ---- 3D taxi hero ---- */
-.taxi-fade-in {
-  animation: taxi-fade 1.3s ease-out 0.15s both;
-}
-
-@keyframes taxi-fade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .taxi-fade-in {
-    animation: none;
-    opacity: 1;
-  }
-}
+/* Subtle fade-in for cards */

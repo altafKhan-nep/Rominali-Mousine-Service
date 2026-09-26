@@ -17,7 +17,7 @@ cd server && npm run dev    # http://localhost:5001
 
 > **macOS gotcha**: Port `5000` is often taken by ControlCenter/AirPlay. The backend defaults to **5001**. If you change it, also update `client/vite.config.js` proxy targets.
 
-## Design System (professional red + black + gold — user-chosen, RED-led)
+## Design System (premium navy + metallic gold — mirrors rominalimousineservice.com)
 
 All design tokens live in `client/src/index.css` inside the Tailwind `@theme` block.
 **Keep token NAMES stable** (`brand-*`, `accent-*`) — component classes reference them by name,
@@ -25,18 +25,20 @@ so you change a color value, never a class.
 
 | Token family | Role | Key values |
 |--------------|------|------------|
-| `brand-*` | **RED = primary brand**: nav/hero/footer bands, CTAs, live dots, red accent text | `brand-500 #e53935`, `brand-600 #d7332f`, `brand-700 #c62828`, `brand-800 #a11c1c`, `brand-950 #57100f` |
+| `brand-*` | **Gold→Navy primary scale**: surfaces, bands, CTAs, chips, accent text. Gold creams at the light end (chip tints), metallic gold `brand-400/500` (CTAs/live dots), deep navy at the dark end (hero/footer/bands). Re-mapped site-wide by value, never by class | `brand-400 #d4af37`, `brand-500 #c9a227`, `brand-600 #1c2541`, `brand-700 #0b132b`, `brand-800 #080d1e`, `brand-950 #050914` |
 | `accent-*` | Neutral blacks/grays = contrast + secondary UI (never primary) | `accent-400 #8f8f9a`, `accent-500 #667085`, `accent-900 #0b0d0f` |
-| `gold-*` | Warm gold = premium highlights / ratings / hero accent words on red | `gold-300 #efc964`, `gold-400 #f4b942`, `gold-500 #eaa82b` |
+| `navy-*` | Deep premium navy (explicit family, used where a navy token is wanted directly — sliders `bg-navy-*`, hero bg) | `navy-500 #1c2541`, `navy-700 #0b132b`, `navy-950 #050914` |
+| `gold-*` | Warm gold = premium highlights / ratings / live dots / on-dark accents | `gold-300 #efc964`, `gold-400 #f4b942`, `gold-500 #eaa82b` |
 | `ink` / `muted` | Text on off-white paper | `ink #0b0d0f`, `muted #667085`, `paper #f8f9fa` |
 | Fonts | `--font-display` = **Fraunces** (serif, headings — elegant editorial), `--font-sans` = **Inter** (body, highly readable) | Google Fonts, loaded in `client/index.html` |
 
 Usage rules:
-- **Red leads**: `bg-brand-gradient` (deep red) is the primary surface for nav/hero/footer/CTA bands. CTAs use `btn-brand-gradient` (bright→deep red). `bg-brand-gradient-soft` (warm off-white wash) is the body background between bands. `text-brand-gradient` (red) highlights words/stats on light sections.
-- **Gold accents on red**: hero accent words, live dots, stat numbers and phone numbers on red bands use `text-gold-300` / `bg-gold-400` (not red) so they pop against the red.
-- **Black is a contrast accent only** — body headings (`ink`), dark icons, map pins; never a surface color.
+- **Navy surfaces + gold moments**: `bg-brand-gradient` IS the navy surface gradient (deep space navy — sub-page heroes, footer, CTA bands, dark panels). `btn-brand-gradient` (gold → deep gold, navy text) is the primary CTA. `bg-brand-gradient-soft` (warm cream/gold wash) is the body background between bands. `text-brand-gradient` (navy → gold sheen) emphasizes keywords on light sections.
+- **Gold accents on navy**: headline accent words, live dots, stat numbers and phone numbers on dark bands use `text-gold-300` / `bg-gold-400` so they pop against the navy.
+- **Chips**: `bg-brand-50 text-brand-700` (cream fill + navy text) is the premium chip idiom; borders/rings use `brand-200/300`. `.eyebrow` = navy label + gold dot.
+- **Blue/green semantics unchanged**: semantic UI states (success green-*, error red-*, info) stay Tailwind colors.
 - Pills everywhere (Uber-style touch targets): `rounded-full` inputs (`input-pill`), buttons, chips.
-- Functional map colors are the ONLY allowed exceptions to the palette: pickup = circular green `map-pin-start` (#10b981), dropoff = red `map-pin-dropoff` (brand-700), driver = pulsing red `map-pin-driver` (brand-600), idle vehicles = `map-pin-vehicle` (white circle + black border). Route polyline is brand red `#c62828` (white casing) hardcoded in `BookingMap.jsx` and `RideTracking.jsx`.
+- Functional map colors are the ONLY literal exceptions (kept as hardcoded hex so the brand-scale remap can never bleed in): pickup = circular green `map-pin-start` (#10b981), dropoff = red `map-pin-dropoff` (#a11c1c), driver = pulsing red `map-pin-driver` (#c62828), idle vehicles = `map-pin-vehicle` (white circle + red border), passenger/user = blue (#2563eb). Route polyline is metallic gold `#d4af37` (white casing) hardcoded wherever Leaflet paths render.
 - Depth comes from layered shadows: `.card-lift` (resting 2-layer shadow, float on hover) — no heavy borders.
 
 ## Tech Stack
@@ -61,14 +63,14 @@ Usage rules:
 ride-booking/
 ├── client/                  # React frontend (Vite)
 │   ├── src/
-│   │   ├── components/      # Reusable UI (auth/, maps/, rides/, ui/, layout/, three/)
+│   │   ├── components/      # Reusable UI (auth/, layout/, maps/, marketing/, rides/, ui/)
 │   │   ├── pages/           # Route pages
 │   │   │   ├── marketing/   # Public site: Home, About, Services, ServiceDetail, Fleet, Contact, Careers
 │   │   │   ├── passenger/   # Reservations.jsx (booking), RideTracking, RideHistory
 │   │   │   ├── driver/      # Dashboard.jsx
 │   │   │   └── admin/       # Dashboard.jsx (Overview/Rides/Drivers/Users/Payments/Settings)
 │   │   ├── data/            # services.js (10 services shared across marketing pages + nav + footer)
-│   │   ├── hooks/           # useSocket, useGeolocation, useAuth
+│   │   ├── hooks/           # useSocket, useGeolocation, useAuth, useSiteContent
 │   │   ├── context/         # AuthContext
 │   │   └── services/        # api.js, authService.js, socketService.js, rideService.js, paymentService.js, notificationService.js, userService.js, adminService.js, settingsService.js
 │   └── public/              # sw.js (web-push service worker)
@@ -89,7 +91,7 @@ ride-booking/
 
 | Path | Page | Access | Notes |
 |------|------|--------|-------|
-| `/` | marketing/Home.jsx | Public | Landing (hero + 3D taxi, booking card, testimonials, service areas) |
+| `/` | marketing/Home.jsx | Public | Landing (navy + gold hero, cinematic fleet photo, booking card, testimonials, service areas) |
 | `/about` | marketing/About.jsx | Public | Company story + "Why Choose Us" |
 | `/services` | marketing/Services.jsx | Public | Full grid of 10 services (data/services.js) |
 | `/services/:slug` | marketing/ServiceDetail.jsx | Public | Data-driven per-service page |
@@ -138,37 +140,27 @@ All brand identity + contact channels are centralized in `client/src/data/site.j
 
 Used in `Footer.jsx` (contact column) and the `tel:`/`mailto:` CTAs on marketing pages.
 
-## 3D Hero Taxi (Home page)
+## Cinematic Fleet Photo Hero (Home page)
 
-`pages/marketing/Home.jsx` embeds a WebGL taxi behind the hero content (desktop/tablet only).
-It is lazy-loaded so the ~265KB gzip three.js bundle only downloads when a supported,
-non-mobile viewport actually renders it.
-
-| File | Purpose |
-|------|---------|
-| `components/three/HeroTaxiScene.jsx` | `<Canvas>` + Suspense + lights + rig |
-| `components/three/TaxiRig.jsx` | GSAP entrance, idle bob, mouse parallax (all lerped) |
-| `components/three/TaxiModel.jsx` | Loads `/models/taxi.glb` if present, else procedural taxi |
-| `components/three/ProceduralTaxi.jsx` | Real 3D sedan built from primitives (body, glass, wheels, decals) |
-| `components/three/TaxiLights.jsx` | Ambient + key + warm fill + cyan rim |
-| `components/three/StudioEnvironment.js` | `RoomEnvironment` PMREM → soft paint/glass reflections (no HDR file) |
-| `components/three/ShadowDisc.jsx` | Soft radial shadow attached to the taxi group |
-| `hooks/useMediaQuery.js`, `useWebGLSupport.js`, `three/useModelAvailable.js` | Responsive / feature detection |
-
-**Dependencies** (v10+ of the app): `three`, `@react-three/fiber`, `@react-three/drei`, `gsap`.
+`pages/marketing/Home.jsx` renders a full-bleed **fleet photo as the hero background**. The whole
+quoted hero (`Maryland · Virginia · Washington DC · Baltimore`, "Experience the pinnacle of
+private travel", the CTA row, the white "Plan your trip" booking card and the trust row) sits on
+the `images/hero-car.jpg` photo, framed and grounded by navy overlay gradients — a left-to-right
+`from-navy-950` fade for the copy, a top-to-bottom fade for legibility, and the gold stats bar
+closing the band.
 
 Rules:
-- **GLB override**: drop a taxi model at `client/public/models/taxi.glb` — it is auto-detected
-  (HEAD + content-type check) and normalized to ~4.6 units. A missing file 404s gracefully to the
-  procedural model. No flat images, ever.
-- **Layering**: taxi layer is `z-[6]`, `pointer-events-none`, `aria-hidden`; hero text + booking
-  card are `z-10` above it. The card stays fully interactive.
-- **Responsive**: hidden on `<768px` and when WebGL is unavailable; tablets get a compact variant.
-- **Reduced motion**: `prefers-reduced-motion` disables entrance + parallax + idle; taxi is static.
-- **Branding**: door decals ("Romina Limousine Service") + roof "ROMINA" sign are canvas textures
-  rendered at runtime — no external font/asset downloads.
-- **Paint**: procedural model is a glossy black sedan (`#1c1c21` PBR, white DRLs, red taillights)
-  — a realistic black car. Keep it black (never red/amber).
+- **Photo, not flat art**: swap the file at `client/public/images/hero-car.jpg` by copying a new
+  landscape photo over it. It renders `absolute inset-0 h-full w-full object-cover` — any
+  landscape shot works; no cropping math needed.
+- **Layering**: the `<img>` + both overlay fades are `pointer-events-none` so the page stays fully
+  interactive; the content wrapper and stats bar are `relative` to sit above them.
+- **Palette is global**: navy/gold is the site-wide premium system (see Design System above) —
+  sub-page heroes (`PageHero`), sections, footer and CTAs all use `bg-brand-gradient` (navy) with
+  gold accents. Do not reintroduce red-led surfaces anywhere.
+- The previous WebGL 3D-taxi subsystem (`components/three/`, `useMediaQuery`,
+  `useWebGLSupport`, and the `three`/`@react-three/*`/`gsap` deps) was **removed** — do not
+  reintroduce it.
 
 ## Key Commands
 
@@ -436,7 +428,7 @@ Driver positions are seeded near Howard County, MD (~39.20, -76.85). "Nearby dri
 3. Login (`POST /api/auth/login`) is handled by **Passport LocalStrategy** (`usernameField: 'identifier'` → email-or-phone). On success the controller issues a 15m access JWT + an opaque refresh token.
 4. Access token embeds `{ id, role, v: tokenVersion }`; `protect` uses the **Passport JWT strategy** and rejects when `v` changes (password reset / logout-all). `TOKEN_EXPIRED` code triggers the client refresh.
 5. Refresh tokens are **opaque, stored hashed** in the `RefreshToken` collection with a TTL index (auto-cleanup). `POST /refresh` **atomically rotates** (`findOneAndUpdate` on `revokedAt: null`) → replaying or racing the same token yields exactly one success. `POST /logout` revokes that device's token. Password reset revokes all + bumps `tokenVersion`.
-6. Social login is the **Passport OAuth2 redirect flow**: `/auth/google` → Google → `/auth/google/callback` → find-or-create/link user → redirect to `/auth/social?accessToken=&refreshToken=` (SPA stores tokens, hard-redirects to `/`). Strategies register only when `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET` or `FACEBOOK_APP_ID`/`FACEBOOK_APP_SECRET` are set; buttons render only when `VITE_GOOGLE_CLIENT_ID`/`VITE_FACEBOOK_APP_ID` are set in `client/.env`.
+6. Social login is the **Passport OAuth2 redirect flow**: `/auth/google` → Google → `/auth/google/callback` → find-or-create/link user → redirect to `/auth/social?accessToken=&refreshToken=` (SPA stores tokens, hard-redirects to `/`). Strategies register only when `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET` (or the Facebook pair) are set. The frontend shows **Google only** (`SocialLoginButtons.jsx`) — the Facebook button was removed; it can be re-added if the app id is configured.
 7. Phone OTP (`/otp/send` + `/otp/verify`) find-or-creates a `phone`-provider user and issues tokens. One-time code (10 min TTL, 5 attempts); without Twilio the code is logged and returned as `devCode`. OTP send is rate-limited per IP. **Currently disabled in the frontend** (no phone button on Login/Register) — backend endpoints remain for later re-enable.
 8. On 401, `api.js` queued-refresh pattern calls `/refresh`, stores the rotated token, retries; on failure clears storage + redirects to `/login`. A `403 Insufficient permissions` also clears + redirects.
 9. **Per-role client sessions**: `api.js` stores tokens under per-role keys (`rt_<role>_access` / `rt_<role>_refresh`) with a per-tab active-role marker in `sessionStorage`, so admin/driver/passenger can stay signed in simultaneously in different tabs without overwriting each other. `tokenStore.setActiveRole()` is set on login/register/social and after `getMe`.
@@ -508,7 +500,7 @@ io.to(`ride:${rideId}`).emit('ride:update', { ride, status });
 4. **MongoDB geospatial**: Create `2dsphere` index on Location.coordinates
 5. **CORS**: Backend must allow `http://localhost:5173` in dev
 6. **Rename colors, not classes**: change values in `index.css` `@theme`, never Tailwind class names in components (see Design System)
-7. **Don't hardcode new brand hexes in components**: route polyline `#b3221a` is the only allowed exception (Leaflet path options need raw hex)
+7. **Don't hardcode new brand hexes in components**: the route polyline gold `#d4af37` + the functional map-pin reds are the only allowed hex literals (Leaflet/path options need raw hex; see Design System).
 8. **Payment idempotency**: the client sends a fresh `idempotencyKey` per attempt; a failed attempt's key is burned (409 on replay). `Payment.transactionId`/`idempotencyKey` are `sparse` unique — do not revert to non-sparse (duplicate-key crashes on pending/failed rows).
 9. **`paymentsEnabled=false`**: `paymentService` rejects with 403; the UI surfaces the disable notice (PaymentModal fetches `GET /api/settings`). Re-enable via admin Settings tab.
 10. **Suspension**: login (`passport.js`), every protected route (`middleware/auth.js`), and refresh rotation all reject `isSuspended` users; admin suspend also revokes their refresh tokens.

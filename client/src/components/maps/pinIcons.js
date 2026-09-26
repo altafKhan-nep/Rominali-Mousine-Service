@@ -68,4 +68,4 @@ export const PIN_USER = svg(
 export const UBER_SEDAN = uberSedan('#0b0d0f');
 export const UBER_SUV = uberSuv('#0b0d0f');
 export const UBER_VAN = uberVan('#0b0d0f');
-export const UBER_SEDAN_GOLD = uberSedan('#a11c1c');
+export const UBER_SEDAN_GOLD = uberSedan('#d4af37');

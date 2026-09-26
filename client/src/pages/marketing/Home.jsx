@@ -1,4 +1,3 @@
-import { Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Phone, MapPin, Flag, Check, ArrowRight, Star, ShieldCheck, Receipt, Timer, UserRound,
@@ -8,16 +7,10 @@ import {
 import { useAuth } from '../../context/AuthContext.jsx';
 import { Button } from '../../components/ui/Button.jsx';
 import { Reveal } from '../../components/ui/Reveal.jsx';
-import { heroSecondary } from '../../components/marketing/PageHero.jsx';
-import { useMediaQuery } from '../../hooks/useMediaQuery.js';
-import { useWebGLSupport } from '../../components/three/useWebGLSupport.js';
 import { SERVICES, FEATURED_SERVICES } from '../../data/services.js';
 import { BRAND_NAME, PHONE_TEL, PHONE_DISPLAY } from '../../data/site.js';
 import { HOMECONTENT_DEFAULTS } from '../../data/homeContent.js';
 import { useSiteContent } from '../../hooks/useSiteContent.js';
-
-// Lazy-loaded so the WebGL/three bundle only downloads when the taxi actually renders.
-const HeroTaxiScene = lazy(() => import('../../components/three/HeroTaxiScene.jsx'));
 
 const STATS = [
   { value: '24/7', label: 'Concierge dispatch, every day' },
@@ -157,22 +150,22 @@ export default function Home() {
   const bookUrl = user ? '/reservations' : '/login';
   const content = useSiteContent('home', HOMECONTENT_DEFAULTS);
 
-  // 3D taxi: hidden on mobile and when WebGL is unavailable; tablets get a compact variant.
-  const isMobile = useMediaQuery('(max-width: 767px)');
-  const isDesktop = useMediaQuery('(min-width: 1024px)');
-  const webgl = useWebGLSupport();
-  const showTaxi = !isMobile && webgl;
-
   const featured = FEATURED_SERVICES.map((slug) => SERVICES.find((s) => s.slug === slug));
 
   return (
     <div>
       {/* ============ HERO ============ */}
-      <section className="bg-brand-gradient relative overflow-hidden text-white">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-white/5 blur-3xl" />
-          <div className="absolute -bottom-40 left-1/3 h-96 w-96 rounded-full bg-gold-500/15 blur-3xl" />
-        </div>
+      <section className="relative overflow-hidden bg-navy-950 text-white">
+        {/* Full-bleed fleet photo background (decorative, never blocks interaction) */}
+        <img
+          src="/images/hero-car.jpg"
+          alt=""
+          aria-hidden
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
+        />
+        {/* Navy overlay bands for legibility behind text + stats */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-navy-950/75 via-navy-950/50 to-navy-950/90" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-navy-950/80 via-navy-950/25 to-transparent" />
 
         <div className="relative">
           <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:py-24">
@@ -183,7 +176,7 @@ export default function Home() {
               </span>
 
               <h1 className="mt-6 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-                {content.hero.title1} <span className="text-gold-300">{content.hero.titleAccent}</span>{' '}
+                {content.hero.title1} <span className="text-gold-gradient">{content.hero.titleAccent}</span>{' '}
                 {content.hero.title2}
               </h1>
 
@@ -193,13 +186,13 @@ export default function Home() {
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Link to={bookUrl}>
-                  <Button size="lg" className="bg-white !text-brand-900 shadow-xl hover:bg-brand-50">
+                  <Button size="lg" className="bg-gold-gradient !text-navy-950 shadow-xl">
                     {content.hero.cta}
                   </Button>
                 </Link>
                 <a
                   href={PHONE_TEL}
-                  className={heroSecondary}
+                  className="inline-flex items-center gap-2 rounded-full border border-gold-400/40 bg-gold-400/5 px-6 py-3 text-base font-semibold text-gold-300 backdrop-blur transition-colors hover:bg-gold-400/10 hover:text-gold-200"
                 >
                   <Phone className="h-4 w-4" />
                   {PHONE_DISPLAY}
@@ -258,22 +251,10 @@ export default function Home() {
               </div>
             </div>
           </div>
-
-          {/* 3D taxi — behind the booking card for depth, never blocking interaction */}
-          {showTaxi && (
-            <div
-              className="taxi-fade-in pointer-events-none absolute inset-0 z-[6]"
-              aria-hidden="true"
-            >
-              <Suspense fallback={null}>
-                <HeroTaxiScene variant={isDesktop ? 'desktop' : 'tablet'} />
-              </Suspense>
-            </div>
-          )}
         </div>
 
         {/* Stats bar */}
-        <div className="relative border-t border-white/10 bg-black/10">
+        <div className="relative border-t border-gold-400/10 bg-navy-950/60">
           <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-8 sm:px-6 md:grid-cols-4">
             {STATS.map((s) => (
               <div key={s.label} className="text-center">

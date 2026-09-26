@@ -24,10 +24,10 @@ export default function LiveMapPage() {
             if (lat==null||lng==null) return null;
             return <Marker key={d._id} position={[lat,lng]} icon={driverIcon}><Popup><b>{d.driver?.name}</b><br/>{d.driver?.driverDetails?.vehicleType}</Popup></Marker>;
           })}
-          {rides.map((r:any)=> (<div key={r._id}><Marker position={[r.pickup.lat,r.pickup.lng]} icon={pickupIcon}><Popup>Pickup: {r.pickup.address}</Popup></Marker><Polyline positions={[[r.pickup.lat,r.pickup.lng],[r.dropoff.lat,r.dropoff.lng]] as any} pathOptions={{ color:'#c62828', weight:4 }} /></div>))}
+          {rides.map((r:any)=> (<div key={r._id}><Marker position={[r.pickup.lat,r.pickup.lng]} icon={pickupIcon}><Popup>Pickup: {r.pickup.address}</Popup></Marker><Polyline positions={[[r.pickup.lat,r.pickup.lng],[r.dropoff.lat,r.dropoff.lng]] as any} pathOptions={{ color:'#d4af37', weight:4 }} /></div>))}
         </MapContainer>
       </div>
-      <Card><CardTitle>Traffic & Airport</CardTitle><p className="text-sm text-muted">Live driver and ride positions refresh every 8s via React Query. Route polyline <code className="rounded bg-accent-100 px-1 dark:bg-white/10">#c62828</code> per palette rule.</p></Card>
+      <Card><CardTitle>Traffic & Airport</CardTitle><p className="text-sm text-muted">Live driver and ride positions refresh every 8s via React Query. Route polyline <code className="rounded bg-accent-100 px-1 dark:bg-white/10">#d4af37</code> per palette rule.</p></Card>
     </div>
   );
 }

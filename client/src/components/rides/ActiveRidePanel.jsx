@@ -117,7 +117,7 @@ export default function ActiveRidePanel({ ride, driverPos, passengerPos, onStatu
                 />
                 <Polyline
                   positions={routePositions}
-                  pathOptions={{ color: '#c62828', weight: 5, opacity: 0.9, lineCap: 'round' }}
+                  pathOptions={{ color: '#d4af37', weight: 5, opacity: 0.9, lineCap: 'round' }}
                 />
               </>
             )}

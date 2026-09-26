@@ -33,7 +33,7 @@ export default function OverviewPage() {
               <span className="h-2 w-2 animate-pulse rounded-full bg-gold-400" /> Howard County • Live
             </span>
             <h1 className="font-display mt-4 text-3xl font-bold tracking-tight sm:text-4xl">Operations <span className="text-gold-300">Overview</span></h1>
-            <p className="mt-2 max-w-xl text-sm leading-relaxed text-white/75">Real-time dispatch, revenue and fleet health — the same red-led editorial system as your website, not a generic SaaS dash.</p>
+            <p className="mt-2 max-w-xl text-sm leading-relaxed text-white/75">Real-time dispatch, revenue and fleet health — the same navy &amp; gold editorial system as your website, not a generic SaaS dash.</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Link to="/admin/dispatch" className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-brand-800 shadow-lg hover:bg-brand-50">Open Dispatch <ArrowRight className="h-4 w-4" /></Link>

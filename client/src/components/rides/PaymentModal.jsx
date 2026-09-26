@@ -223,7 +223,7 @@ export default function PaymentModal({ ride, onClose, onPaid }) {
                       appearance: {
                         theme: 'stripe',
                         variables: {
-                          colorPrimary: '#d7332f',
+                          colorPrimary: '#d4af37',
                           colorBackground: '#ffffff',
                           colorText: '#0b0d0f',
                           fontFamily: 'Inter, system-ui, sans-serif',

@@ -240,14 +240,14 @@ export default function RideTracking() {
                   />
                   <Polyline
                     positions={driverRoute.map((p) => [p.lat, p.lng])}
-                    pathOptions={{ color: '#c62828', weight: 5, opacity: 0.9, lineCap: 'round', dashArray: '8 10' }}
+                    pathOptions={{ color: '#d4af37', weight: 5, opacity: 0.9, lineCap: 'round', dashArray: '8 10' }}
                   />
                 </>
               )}
               {driverRoute.length === 0 && route.length > 0 && (
                 <>
                   <Polyline positions={route.map((p) => [p.lat, p.lng])} pathOptions={{ color: '#ffffff', weight: 9, opacity: 0.7, lineCap: 'round' }} />
-                  <Polyline positions={route.map((p) => [p.lat, p.lng])} pathOptions={{ color: '#c62828', weight: 5, opacity: 0.9, lineCap: 'round' }} />
+                  <Polyline positions={route.map((p) => [p.lat, p.lng])} pathOptions={{ color: '#d4af37', weight: 5, opacity: 0.9, lineCap: 'round' }} />
                 </>
               )}
             </MapContainer>

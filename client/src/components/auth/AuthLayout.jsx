@@ -25,14 +25,14 @@ export default function AuthLayout({ title, subtitle, children, footer }) {
         <div className="relative z-10 flex flex-1 flex-col justify-between p-10 xl:px-14 xl:py-12">
           <Link to="/" className="flex items-center gap-3">
             <img src="/logo.png" alt="" className="h-12 w-auto drop-shadow-lg" />
-            <span className="text-2xl font-bold tracking-tight">
+            <span className="text-2xl font-bold tracking-tight text-white">
               Romina <span className="text-gold-300">Limousine</span>
             </span>
           </Link>
 
           <div className="my-10">
             <span className="eyebrow eyebrow-on-dark">Est. {BRAND_ESTABLISHED} · Maryland</span>
-            <h1 className="mt-5 text-[2.75rem] font-bold leading-[1.05] tracking-tight drop-shadow-sm xl:text-5xl">
+            <h1 className="mt-5 text-[2.75rem] font-bold leading-[1.05] tracking-tight text-white drop-shadow-sm xl:text-5xl">
               Private travel,
               <span className="block text-gold-300">
                 reinvented
