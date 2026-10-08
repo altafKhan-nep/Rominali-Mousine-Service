@@ -1,4 +1,4 @@
-# Interserver Deployment Guide — Ellicott City Airport Taxi
+# Interserver Deployment Guide — Romina Limousine Service
 
 Deploy the **production-optimized** MERN stack (React + Express/Socket.io + MongoDB) on **Interserver VPS** — the correct Interserver product for Node.js (shared hosting cannot run Node). This guide is optimized for Interserver's infrastructure and includes performance, security, and cost controls.
 
@@ -72,8 +72,8 @@ su - deploy
 
 ```bash
 cd ~
-git clone https://github.com/altafKhan-nep/Ellicott-city-Airport-Taxi.git ellicot
-cd ellicot
+git clone https://github.com/altafKhan-nep/Rominali-Mousine-Service.git ridetaxi
+cd ridetaxi
 
 # --- Backend env ---
 cp server/.env.example server/.env
@@ -84,8 +84,8 @@ nano server/.env
 # MONGO_URI=mongodb+srv://<user>:<password>@cluster0.xxxxx.mongodb.net/ridetaxi?retryWrites=true&w=majority  ← Atlas M0 string
 # JWT_ACCESS_SECRET=<48 hex>
 # JWT_REFRESH_SECRET=<different 48 hex>
-# CLIENT_ORIGIN=https://ellicottcityairporttaxi.com  (or https://66.45.240.12 if testing IP)
-# APP_URL=https://ellicottcityairporttaxi.com
+# CLIENT_ORIGIN=https://yourdomain.com  (or https://66.45.240.12 if testing IP)
+# APP_URL=https://yourdomain.com
 # TRUST_PROXY=true
 # RATE_LIMIT_API=2000  RATE_LIMIT_AUTH=200  RATE_LIMIT_LOGIN=1000  (raised for polling, see server/.env)
 # STRIPE_SECRET_KEY=sk_live_...  STRIPE_PAYMENT_METHOD_DOMAIN=pmd_...  (live keys)
@@ -94,7 +94,7 @@ nano server/.env
 # --- Frontend env ---
 cp client/.env.example client/.env
 nano client/.env
-# VITE_API_URL=https://ellicottcityairporttaxi.com  ← same domain (Nginx proxies /api), OR https://ellicottcityairporttaxi.com
+# VITE_API_URL=https://yourdomain.com  ← same domain (Nginx proxies /api), OR https://yourdomain.com
 # VITE_STRIPE_PUBLISHABLE_KEY=pk_live_...
 # VITE_GOOGLE_CLIENT_ID=... (optional)
 
@@ -115,7 +115,7 @@ sleep 3; curl http://localhost:5001/api/health; kill %1
 The repo includes `ecosystem.config.js` (2 instances, cluster, memory limit, log rotate). Use it:
 
 ```bash
-cd ~/ellicot
+cd ~/ridetaxi
 pm2 start ecosystem.config.js --env production
 pm2 save
 pm2 logs --lines 30
@@ -135,10 +135,10 @@ curl http://localhost:5001/api/health  # {"status":"ok"}
 ## 5. Nginx — Reverse Proxy + Static + SSL + Performance
 
 ```bash
-sudo nano /etc/nginx/sites-available/ellicot
+sudo nano /etc/nginx/sites-available/ridetaxi
 ```
 
-Paste (replace `ellicottcityairporttaxi.com` with your domain or IP for testing):
+Paste (replace `yourdomain.com` with your domain or IP for testing):
 
 ```nginx
 # Rate limit for login (complements Express)
@@ -146,7 +146,7 @@ limit_req_zone $binary_remote_addr zone=login:10m rate=20r/m;
 
 server {
     listen 80;
-    server_name ellicottcityairporttaxi.com www.ellicottcityairporttaxi.com 66.45.240.12;
+    server_name yourdomain.com www.yourdomain.com 66.45.240.12;
 
     # Security headers (also set by helmet, double layer)
     add_header X-Frame-Options "SAMEORIGIN" always;
@@ -159,7 +159,7 @@ server {
     gzip_min_length 1024;
 
     # Frontend — static Vite build
-    root /home/deploy/ellicot/client/dist;
+    root /home/deploy/ridetaxi/client/dist;
     index index.html;
 
     # API + WebSockets → PM2
@@ -200,7 +200,7 @@ server {
 Enable:
 
 ```bash
-sudo ln -s /etc/nginx/sites-available/ellicot /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/ridetaxi /etc/nginx/sites-enabled/
 sudo rm -f /etc/nginx/sites-enabled/default
 sudo nginx -t && sudo systemctl restart nginx
 curl http://localhost/api/health  # via Nginx → {"status":"ok"}
@@ -210,12 +210,12 @@ curl http://localhost/api/health  # via Nginx → {"status":"ok"}
 
 ## 6. Domain & SSL (Interserver + Let's Encrypt)
 
-1. **Interserver panel → Domains → Add** `ellicottcityairporttaxi.com` → set its **Nameservers** to Interserver’s (in the panel) or keep Cloudflare and point `A` to `66.45.240.12`.
-2. Wait DNS propagates (`dig ellicottcityairporttaxi.com` shows your IP, ~5 min - 2h).
+1. **Interserver panel → Domains → Add** `yourdomain.com` → set its **Nameservers** to Interserver’s (in the panel) or keep Cloudflare and point `A` to `66.45.240.12`.
+2. Wait DNS propagates (`dig yourdomain.com` shows your IP, ~5 min - 2h).
 3. SSL (free, auto-renew):
 
 ```bash
-sudo certbot --nginx -d ellicottcityairporttaxi.com -d www.ellicottcityairporttaxi.com
+sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
 # Choose redirect HTTP → HTTPS
 sudo certbot renew --dry-run
 ```
@@ -223,20 +223,20 @@ sudo certbot renew --dry-run
 Update `server/.env` now:
 
 ```
-CLIENT_ORIGIN=https://ellicottcityairporttaxi.com
-APP_URL=https://ellicottcityairporttaxi.com
-VITE_API_URL=https://ellicottcityairporttaxi.com  (in client/.env, then rebuild)
+CLIENT_ORIGIN=https://yourdomain.com
+APP_URL=https://yourdomain.com
+VITE_API_URL=https://yourdomain.com  (in client/.env, then rebuild)
 ```
 
 Rebuild & reload:
 
 ```bash
-cd ~/ellicot/client && npm run build
-cd ~/ellicot && pm2 reload ecosystem.config.js --env production
+cd ~/ridetaxi/client && npm run build
+cd ~/ridetaxi && pm2 reload ecosystem.config.js --env production
 sudo systemctl reload nginx
 ```
 
-Verify: `https://ellicottcityairporttaxi.com` loads, `https://ellicottcityairporttaxi.com/api/health` is `ok`, booking → driver feed works (WebSocket via Nginx).
+Verify: `https://yourdomain.com` loads, `https://yourdomain.com/api/health` is `ok`, booking → driver feed works (WebSocket via Nginx).
 
 ---
 
@@ -262,7 +262,7 @@ These are in the repo so you don’t need to re-apply:
 
 ```bash
 # On the VPS as deploy
-cd ~/ellicot
+cd ~/ridetaxi
 git pull origin main
 cd client && npm ci && npm run build
 cd ../server && npm ci --omit=dev
@@ -279,23 +279,23 @@ For CI, add a **Deploy Hook** in Interserver panel (or use `git pull` cron) — 
 
 | Symptom | Cause on Interserver | Fix |
 |---------|----------------------|-----|
-| `CORS` on `https://api` | `CLIENT_ORIGIN` still `https://...vercel.app` | Set to `https://ellicottcityairporttaxi.com` and `pm2 reload` |
+| `CORS` on `https://api` | `CLIENT_ORIGIN` still `https://...vercel.app` | Set to `https://yourdomain.com` and `pm2 reload` |
 | `429` on login | `RATE_LIMIT_LOGIN 10` + polling | Already raised to `1000` in `server/.env` for dev; keep `20` in prod |
 | `502` on `/socket.io` | Nginx missing `Upgrade` headers | Use the `location /socket.io/` block above exactly |
 | Build OOM `Killed` | 1GB RAM, `npm run build` needs `~1.2GB` | Use `1 Slice` **2GB** (not 1GB), or `NODE_OPTIONS=--max_old_space_size=1500 npm run build` |
 | Cold start slow | Free Atlas `M0` sleeps | Keep Atlas `M0` (always on) — not Render free sleep; UptimeRobot on `/api/health` optional |
-| Mixed content | `VITE_API_URL` `http://` | Must be `https://ellicottcityairporttaxi.com` (same origin, Nginx proxies) |
+| Mixed content | `VITE_API_URL` `http://` | Must be `https://yourdomain.com` (same origin, Nginx proxies) |
 
 ---
 
 ## 10. Post-Launch Checklist (Interserver VPS)
 
-- [ ] `https://ellicottcityairporttaxi.com/api/health` → `ok` via Nginx
-- [ ] `https://ellicottcityairporttaxi.com` loads, booking → driver feed → tracking E2E works (WebSocket)
+- [ ] `https://yourdomain.com/api/health` → `ok` via Nginx
+- [ ] `https://yourdomain.com` loads, booking → driver feed → tracking E2E works (WebSocket)
 - [ ] `pm2 status` shows `2` online, `pm2 logs` clean, `sudo certbot renew --dry-run` ok
 - [ ] `client/dist` served by Nginx (not `vite` dev), `curl -I https://.../assets/index-*.js` has `cache-control: public, immutable, max-age=31536000`
 - [ ] Atlas `M0` → `0.0.0.0/0` + strong password, `npm run seed` once for demo accounts
 - [ ] `JWT secrets` long/random, different, `TRUST_PROXY=true`, `NODE_ENV=production`
-- [ ] UptimeRobot on `https://ellicottcityairporttaxi.com/api/health` (optional)
+- [ ] UptimeRobot on `https://yourdomain.com/api/health` (optional)
 
 *Companion: `BROWSER_TESTING_GUIDE.md` (manual QA), `TECHNICAL_GUIDE.md` (architecture), `DEPLOYMENT_GUIDE.md` (Render/Vercel free alternative).*

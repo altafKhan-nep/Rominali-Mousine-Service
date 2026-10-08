@@ -35,10 +35,11 @@ Open **http://localhost:5173** — you should see the red/black/gold landing pag
 
 | Role | Email | Password | Notes |
 |------|-------|----------|-------|
-| Passenger | `passenger@ellicot.com` | `pass123` | Books rides, pays, tracks |
-| Driver (Executive Sedan) | `alex@ellicot.com` | `driver123` | Receives + accepts rides |
-| Driver (Premium SUV) | `sam@ellicot.com` | `driver123` | Used to test vehicle matching |
-| Admin | `admin@ellicot.com` | `admin123` | Dispatch, users, payments, settings |
+| Passenger | `passenger@rominalimo.com` | `pass123` | Books rides, pays, tracks |
+| Driver (Executive Sedan) | `alex@rominalimo.com` | `driver123` | Receives + accepts rides |
+| Driver (SUV) | `maria@rominalimo.com` | `driver123` | Tests SUV booking + vehicle matching |
+| Driver (Chevrolet) | `omar@rominalimo.com` | `driver123` | Tests Chevrolet booking + vehicle matching |
+| Admin | `admin@rominalimo.com` | `admin123` | Dispatch, users, payments, settings, driver approval |
 
 The login page has **quick-fill buttons** (`Passenger` / `Driver` / `Admin`) that fill the
 email + password for you.

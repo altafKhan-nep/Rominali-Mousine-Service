@@ -1,4 +1,4 @@
-# Ellicott City Airport Taxi — Technical Guide
+# Romina Limousine Service — Technical Guide
 
 *Documentation for engineering / development teams: architecture, setup, integration,
 maintenance, and operations.*
@@ -77,10 +77,11 @@ cd server && npm run dev     # http://localhost:5001 (nodemon)
 
 | Role | Email | Password |
 |---|---|---|
-| admin | `admin@ellicot.com` | `admin123` |
-| passenger | `passenger@ellicot.com` | `pass123` |
-| driver (Executive Sedan) | `alex@ellicot.com` | `driver123` |
-| driver (Premium SUV) | `sam@ellicot.com` | `driver123` |
+| admin | `admin@rominalimo.com` | `admin123` |
+| passenger | `passenger@rominalimo.com` | `pass123` |
+| driver (Executive Sedan) | `alex@rominalimo.com` | `driver123` |
+| driver (SUV) | `maria@rominalimo.com` | `driver123` |
+| driver (Chevrolet) | `omar@rominalimo.com` | `driver123` |
 
 Driver `Location` docs are seeded near Howard County, MD (~39.20, -76.85). The `nearby
 drivers` queries only return results once the seed (or driver location broadcasts) populate

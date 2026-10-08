@@ -15,4 +15,4 @@ echo "6. Health"
 sleep 2
 curl -s http://localhost:5001/api/health | head -n 1
 curl -s http://localhost/api/health | head -n 1
-echo "Done — https://ellicottcityairporttaxi.com"
+echo "Done — https://yourdomain.com"

@@ -1,4 +1,4 @@
-# Ellicott City Airport Taxi — Product Overview
+# Romina Limousine Service — Product Overview
 
 *Documentation for managers, marketing, and stakeholders.*
 
@@ -6,7 +6,7 @@
 
 ## 1. What It Is
 
-**Ellicott City Airport Taxi** is a complete, production-grade ride-booking platform that
+**Romina Limousine Service** is a complete, production-grade ride-booking platform that
 connects passengers, drivers, and a central dispatch (admin) team over the web. It powers a
 real airport-taxi business: passengers book door-to-door rides across Maryland, DC, and
 Virginia; drivers receive and accept nearby requests in real time; and the office dispatches
@@ -17,7 +17,7 @@ live tracking, payments, notifications, and back-office management all in one.
 
 | Quick facts | |
 |---|---|
-| Legal brand | Ellicott City Airport Taxi |
+| Legal brand | Romina Limousine Service |
 | Phone | (410) 365-5556 |
 | Email | chriskbonsu@gmail.com |
 | Service area | Maryland, DC, Virginia (local + long distance, door-to-door) |

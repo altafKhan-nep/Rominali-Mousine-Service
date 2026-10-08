@@ -1,4 +1,4 @@
-# Deployment Guide — Ellicott City Airport Taxi (100% free hosting)
+# Deployment Guide — Romina Limousine Service (100% free hosting)
 
 Deploy the full stack (React frontend + Express/Socket.io backend + MongoDB) to the
 internet for free using:
@@ -154,7 +154,7 @@ hardcoded.
      https://myaccount.google.com/apppasswords.
   2. `SMTP_HOST=smtp.gmail.com`, `SMTP_PORT=465`, `SMTP_SECURE=true`,
      `SMTP_USER=<gmail>`, `SMTP_PASS=<16-char app password>`,
-     `SMTP_FROM=Ellicott City Airport Taxi <gmail>`.
+     `SMTP_FROM=Romina Limousine Service <gmail>`.
   Without SMTP, dev-only console fallbacks are used, so links may not actually reach users.
 - **Web push.** `npx web-push generate-vapid-keys --json` → set the VAPID keys on Render;
   the bell icon then offers browser notifications.
