@@ -8,6 +8,7 @@ cd client && npm ci && npm run build && cd ..
 echo "3. Server deps"
 cd server && npm ci --omit=dev && cd ..
 echo "4. PM2 reload"
+mkdir -p server/logs          # ecosystem.config.js writes ./logs relative to server/
 pm2 reload ecosystem.config.js --env production
 echo "5. Nginx reload"
 sudo nginx -t && sudo systemctl reload nginx
