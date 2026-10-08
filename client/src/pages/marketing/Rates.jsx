@@ -46,8 +46,8 @@ export default function Rates() {
               <thead>
                 <tr className="bg-brand-gradient text-white">
                   <th className="px-6 py-5 text-sm font-semibold">Route &amp; Destination</th>
-                  <th className="px-6 py-5 text-sm font-semibold">Luxury Sedan 1–4 Passengers</th>
-                  <th className="px-6 py-5 text-sm font-semibold">Premium SUV 1–6 Passengers</th>
+                  <th className="px-6 py-5 text-sm font-semibold">Luxury Sedan</th>
+                  <th className="px-6 py-5 text-sm font-semibold">Premium SUV</th>
                   <th className="px-6 py-5 text-sm font-semibold">Est. Travel Time</th>
                 </tr>
               </thead>

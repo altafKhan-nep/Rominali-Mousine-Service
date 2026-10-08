@@ -70,14 +70,14 @@ export default function About() {
               A chauffeur network that puts people first
             </h2>
             <p className="mt-5 text-base leading-relaxed text-muted">
-              Established in 2026 in Maryland, Romina Limousine Service was founded on a simple
+              Established in 2024-2026 in Maryland, Romina Limousine Service was founded on a simple
               belief: private travel should be seamless, punctual and genuinely luxurious. We
               built an elite fleet — luxury sedans, premium SUVs and executive Sprinter vans — and
               paired it with chauffeurs who treat every trip as the most important one.
             </p>
             <p className="mt-4 text-base leading-relaxed text-muted">
-              With highly synchronized fleet staging, a professional chauffeur can be curbside at
-              BWI within 15 minutes of your request. We track your flight in real time, adjust gate
+              With highly synchronized fleet staging, a professional chauffeur is staged and waiting
+              at BWI the moment you land. We track your flight in real time, adjust gate
               pickups automatically and never charge for delays — because your peace of mind is the
               standard we measure ourselves against.
             </p>

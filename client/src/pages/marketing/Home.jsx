@@ -14,7 +14,7 @@ import { useSiteContent } from '../../hooks/useSiteContent.js';
 
 const STATS = [
   { value: '24/7', label: 'Concierge dispatch, every day' },
-  { value: '15 min', label: 'Curbside staging at BWI' },
+  { value: 'Curbside', label: 'Staging at BWI' },
   { value: '3', label: 'Major airports served' },
   { value: '5.0', label: 'Passenger rating' },
 ];
@@ -22,7 +22,7 @@ const STATS = [
 const TRUST = [
   { icon: ShieldCheck, label: 'Absolute punctuality guarantee' },
   { icon: Receipt, label: 'Fixed rate pricing, zero surge' },
-  { icon: Plane, label: 'Real-time flight tracking' },
+  { icon: MapPin, label: 'Real-time ride tracking' },
   { icon: Star, label: 'Late-model luxury fleet' },
 ];
 
@@ -110,7 +110,7 @@ const AMENITIES = [
 
 const STEPS = [
   { n: '01', t: 'Book your ride', d: 'Reserve online in seconds and see your flat, fixed rate upfront — zero surge, zero hidden fees. Pre-booking secures a dedicated chauffeur.' },
-  { n: '02', t: 'Your chauffeur arrives', d: 'Synchronized fleet staging gets you a curbside meet at BWI within 15 minutes. Your driver monitors flights in real time, so delays never cost you.' },
+  { n: '02', t: 'Your chauffeur arrives', d: 'Synchronized fleet staging gets you a curbside meet at BWI the moment you land. Your driver monitors flights in real time, so delays never cost you.' },
   { n: '03', t: 'Track & ride', d: 'Follow your chauffeur live on the map, share the trip with loved ones, and rate your ride when it ends.' },
 ];
 
@@ -280,7 +280,7 @@ export default function Home() {
               Looking for a seamless, upscale transfer to or from Baltimore/Washington
               International? We are the premier choice for luxury BWI airport car service, proudly
               serving Baltimore, Maryland and the surrounding metropolitan regions — a professional
-              chauffeur can be curbside at BWI within 15 minutes of your request.
+              chauffeur is curbside at BWI the moment you land.
             </p>
             <p className="mt-4 text-base leading-relaxed text-muted">
               Avoid the uncertainty and long lines of rideshares or taxi queues. Our meticulously
