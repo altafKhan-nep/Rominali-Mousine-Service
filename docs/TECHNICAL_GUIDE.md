@@ -47,7 +47,8 @@ Express API  ─────────────►  Socket.io server (user:
 ## 2. Getting Started (Local Dev)
 
 ### Prerequisites
-- Node.js 18+ (dev is on 25.x), npm
+- Node.js **22+** (pinned via `engines` in both `package.json`; production uses **Node 24 LTS**), npm
+  - Node 18 reached EOL 2025-04-30 and Node 20 reached EOL 2026-04-30 — both are unsupported.
 - MongoDB running locally (`mongodb://127.0.0.1:27017/ridetaxi`) or a Mongo Atlas URI
 - (Optional) Google/Facebook OAuth client IDs, Twilio, SMTP, VAPID keys — app runs without them
 

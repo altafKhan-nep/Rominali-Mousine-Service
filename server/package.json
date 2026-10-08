@@ -4,6 +4,9 @@
   "description": "RideTaxi backend - Express + MongoDB + Socket.io",
   "main": "src/index.js",
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",

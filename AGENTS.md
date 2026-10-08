@@ -164,6 +164,10 @@ Rules:
 
 ## Key Commands
 
+> **Runtime:** Node **22+** required (`engines` in both `package.json`); production runs **Node 24 LTS**.
+> Node 18 (EOL 2025-04) and Node 20 (EOL 2026-04) are unsupported — they receive no security patches.
+> Deploy target: Ubuntu 24.04 LTS + MongoDB 8.0 (see `docs/INTERSERVER_SIMPLE_GUIDE.md`).
+
 ```bash
 # Frontend
 cd client && npm run dev        # Start dev server
