@@ -17,6 +17,10 @@ export default function Register() {
     phone: '',
     password: '',
     role: 'passenger',
+    vehicleType: 'SUV',
+    vehicleName: '',
+    plateNumber: '',
+    licenseNo: '',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -31,7 +35,16 @@ export default function Register() {
     }
     setLoading(true);
     try {
-      const data = await register(form);
+      const payload = { ...form };
+      if (form.role === 'driver') {
+        payload.driverDetails = {
+          vehicleType: form.vehicleType,
+          vehicleName: form.vehicleName,
+          plateNumber: form.plateNumber,
+          licenseNo: form.licenseNo,
+        };
+      }
+      const data = await register(payload);
       setDone({ email: form.email, verificationLink: data.verificationLink || '' });
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');
@@ -124,6 +137,56 @@ export default function Register() {
             ))}
           </div>
         </div>
+
+        {form.role === 'driver' && (
+          <div className="space-y-4 rounded-2xl border border-accent-100 bg-accent-50/50 p-4">
+            <div>
+              <span className="mb-2 block text-sm font-medium text-ink">Vehicle type</span>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { id: 'SUV', label: 'SUV' },
+                  { id: 'Chevrolet', label: 'Chevrolet' },
+                ].map((v) => (
+                  <button
+                    key={v.id}
+                    type="button"
+                    onClick={() => setForm({ ...form, vehicleType: v.id })}
+                    className={`rounded-xl border p-3 text-sm font-semibold transition-colors ${
+                      form.vehicleType === v.id
+                        ? 'border-brand-500 bg-brand-50 text-brand-700 ring-2 ring-brand-100'
+                        : 'border-accent-200 hover:border-accent-300'
+                    }`}
+                  >
+                    {v.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <Input
+              label="Vehicle name / model"
+              placeholder="e.g. Chevrolet Suburban"
+              value={form.vehicleName}
+              onChange={set('vehicleName')}
+            />
+            <div className="grid grid-cols-2 gap-3">
+              <Input
+                label="Plate number"
+                placeholder="e.g. MD-12345"
+                value={form.plateNumber}
+                onChange={set('plateNumber')}
+              />
+              <Input
+                label="License number"
+                placeholder="Driver license"
+                value={form.licenseNo}
+                onChange={set('licenseNo')}
+              />
+            </div>
+            <p className="text-xs text-muted">
+              Your driver account will be reviewed and approved by an admin before you can go online.
+            </p>
+          </div>
+        )}
 
         {error && <p className="rounded-xl bg-red-50 px-4 py-2.5 text-sm text-red-700">{error}</p>}
         <Button type="submit" size="lg" loading={loading} className="w-full">

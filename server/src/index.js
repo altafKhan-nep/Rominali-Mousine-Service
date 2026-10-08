@@ -20,6 +20,7 @@ import paymentRoutes from "./routes/payments.js";
 import notificationRoutes from "./routes/notifications.js";
 import settingsRoutes from "./routes/settings.js";
 import contentRoutes from "./routes/content.js";
+import contactRoutes from "./routes/contact.js";
 import { initRedis } from "./config/redis.js";
 
 dotenv.config();
@@ -111,6 +112,7 @@ app.use("/api/payments", paymentRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/settings", settingsRoutes);
 app.use("/api/content", contentRoutes);
+app.use("/api/contact", contactRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

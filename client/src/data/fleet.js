@@ -14,6 +14,17 @@ export const FLEET = [
     features: ['Mercedes-Benz S-Class configuration', 'Climate-controlled zones', 'Complimentary bottled water', 'Professional chauffeur in uniform'],
   },
   {
+    id: 'chevrolet',
+    img: '/images/chevrolet.jpg',
+    name: 'Chevrolet',
+    tag: 'Executive Sedan',
+    passengers: 'Comfortable seating',
+    luggage: 'Ample cargo',
+    perks: ['Free Wi-Fi', 'Refreshments'],
+    tagline: 'The classic ride for everyday executive travel',
+    features: ['Smooth executive sedan configuration', 'Climate-controlled comfort', 'Complimentary bottled water', 'Professional chauffeur in uniform'],
+  },
+  {
     id: 'premium-suv',
     img: '/images/premium-suv.jpg',
     name: 'Cadillac Escalade Platinum Luxury ESV',

@@ -6,7 +6,7 @@ import { Button } from '../ui/Button.jsx';
 import { Input } from '../ui/Input.jsx';
 import LocationSearch from './LocationSearch.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
-import { VEHICLES } from '../../data/vehicles.js';
+import { BOOKING_VEHICLES } from '../../data/vehicles.js';
 import { SERVICES } from '../../data/services.js';
 
 export default function BookingForm({ pickup, dropoff, onPickupChange, onDropoffChange }) {
@@ -147,7 +147,7 @@ export default function BookingForm({ pickup, dropoff, onPickupChange, onDropoff
           aria-label="Vehicle type"
         >
           <option value="" disabled>Choose vehicle — fare updates instantly</option>
-          {VEHICLES.map((v) => (
+          {BOOKING_VEHICLES.map((v) => (
             <option key={v.id} value={v.id}>
               {v.label} — {v.desc}
             </option>

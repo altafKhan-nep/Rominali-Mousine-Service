@@ -42,6 +42,7 @@ export default function Dashboard() {
   const [feedMsg, setFeedMsg] = useState('');
   const [error, setError] = useState('');
   const [statsError, setStatsError] = useState('');
+  const [approved, setApproved] = useState(true);
   const lastSent = useRef(0);
 
   // Own location broadcast: while online OR serving a ride, throttle to 1 per 2s.
@@ -70,6 +71,7 @@ export default function Dashboard() {
   useEffect(() => {
     getProfile()
       .then(({ data }) => {
+        setApproved(data.user?.isApproved !== false);
         if (data.user?.driverDetails?.isAvailable) setOnline(true);
       })
       .catch(() => {});
@@ -137,6 +139,10 @@ export default function Dashboard() {
   }, []);
 
   const toggle = async () => {
+    if (!approved) {
+      setError('Your driver account is awaiting admin approval. You can go online once an admin approves you.');
+      return;
+    }
     const next = !online;
     setToggling(true);
     try {
@@ -192,6 +198,16 @@ export default function Dashboard() {
       </p>
 
       {error && <p className="mt-4 rounded-xl bg-red-50 px-4 py-2.5 text-sm text-red-700">{error}</p>}
+
+      {!approved && (
+        <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-5">
+          <p className="font-semibold text-amber-800">Awaiting admin approval</p>
+          <p className="mt-1 text-sm text-amber-700">
+            Your driver account and vehicle information have been submitted for review.
+            You'll be able to go online and receive ride requests once an admin approves your account.
+          </p>
+        </div>
+      )}
 
       {/* Status card */}
       <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">

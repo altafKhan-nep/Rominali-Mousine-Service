@@ -72,6 +72,8 @@ const estimateFare = (distanceKm, durationMin, vehicleType, overrides = {}) => {
     'economy-suv': { base: 5, perKm: 1.8, perMin: 0.4 },
     'premium-suv': { base: 7, perKm: 2.2, perMin: 0.45 },
     'luxury-suv': { base: 10, perKm: 2.6, perMin: 0.5 },
+    SUV: { base: 7, perKm: 2.2, perMin: 0.45 },
+    Chevrolet: { base: 8, perKm: 2.4, perMin: 0.5 },
     van: { base: 8, perKm: 2.0, perMin: 0.42 },
     'mini-coach': { base: 35, perKm: 3.5, perMin: 0.8 },
     'school-bus': { base: 45, perKm: 4.0, perMin: 0.9 },
@@ -135,7 +137,7 @@ export const findNearbyDrivers = async ({ lat, lng, radius = RADIUS_M, vehicleTy
     if (vehicleType) {
       const exact = await Location.find(match).populate({
         path: 'driver',
-        match: { role: 'driver', 'driverDetails.isAvailable': true, 'driverDetails.vehicleType': vehicleType },
+        match: { role: 'driver', isApproved: true, 'driverDetails.isAvailable': true, 'driverDetails.vehicleType': vehicleType },
       });
       const filtered = exact.filter((l) => l.driver);
       if (filtered.length > 0) {
@@ -160,7 +162,12 @@ export const findNearbyDrivers = async ({ lat, lng, radius = RADIUS_M, vehicleTy
     }
     const fallback = await Location.find(match).populate({
       path: 'driver',
-      match: { role: 'driver', 'driverDetails.isAvailable': true },
+      match: {
+        role: 'driver',
+        isApproved: true,
+        'driverDetails.isAvailable': true,
+        ...(vehicleType ? { 'driverDetails.vehicleType': vehicleType } : {}),
+      },
     });
     const filtered = fallback.filter((l) => l.driver);
     if (filtered.length > 0) {
@@ -413,7 +420,10 @@ export const listDrivers = async () => {
 export const listAvailableRides = async (driverId) => {
   const driver = await User.findById(driverId).select('role driverDetails');
   if (!driver || driver.role !== 'driver') return [];
-  // Available = pending + not yet assigned, regardless of vehicle (for demo, show all pending)
-  // In production, filter by service area bbox MD/DC/VA
-  return Ride.find({ status: 'pending' }).sort({ createdAt: -1 }).limit(20).populate('passenger', 'name phone avatar');
+  // Only show pending rides that match this driver's registered vehicle.
+  const query = { status: 'pending' };
+  if (driver.driverDetails?.vehicleType) {
+    query.vehicleType = driver.driverDetails.vehicleType;
+  }
+  return Ride.find(query).sort({ createdAt: -1 }).limit(20).populate('passenger', 'name phone avatar');
 };

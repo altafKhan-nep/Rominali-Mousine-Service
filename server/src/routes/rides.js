@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { protect, requireRole } from '../middleware/auth.js';
+import { protect, requireRole, requireApprovedDriver } from '../middleware/auth.js';
 import * as ride from '../controllers/rideController.js';
 import * as payment from '../controllers/paymentController.js';
 
@@ -9,12 +9,12 @@ const router = Router();
 router.use(protect);
 
 router.post('/', requireRole('passenger'), ride.createRide);
-router.get('/available', requireRole('driver'), ride.availableRides);
+router.get('/available', requireRole('driver'), requireApprovedDriver, ride.availableRides);
 router.get('/', ride.listRides);
 router.get('/:id', ride.getRide);
 router.patch('/:id', requireRole('passenger'), ride.editRide);
-router.patch('/:id/accept', requireRole('driver'), ride.acceptRide);
-router.patch('/:id/status', requireRole('driver'), ride.updateStatus);
+router.patch('/:id/accept', requireRole('driver'), requireApprovedDriver, ride.acceptRide);
+router.patch('/:id/status', requireRole('driver'), requireApprovedDriver, ride.updateStatus);
 router.patch('/:id/cancel', ride.cancelRide);
 router.post('/:id/rate', requireRole('passenger'), ride.rateRide);
 router.get('/:id/messages', ride.getMessages);

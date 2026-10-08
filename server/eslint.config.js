@@ -9,6 +9,7 @@ export default [
         console: 'readonly',
         fetch: 'readonly',
         URL: 'readonly',
+        AbortSignal: 'readonly',
       },
     },
     rules: {

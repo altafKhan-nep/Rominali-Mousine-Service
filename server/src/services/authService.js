@@ -48,6 +48,7 @@ export const publicUser = (user) => ({
   avatar: user.avatar,
   emailVerified: user.emailVerified,
   authProvider: user.authProvider,
+  isApproved: user.isApproved,
   driverDetails: user.driverDetails,
 });
 
@@ -133,6 +134,7 @@ export const register = async ({ name, email, phone, password, role, driverDetai
   const ALLOWED_PUBLIC_ROLES = ['passenger', 'driver'];
   const safeRole = ALLOWED_PUBLIC_ROLES.includes(role) ? role : 'passenger';
   const safeDriverDetails = safeRole === 'driver' ? driverDetails : undefined;
+  // New drivers always start unapproved — an admin must approve before they can work.
   const user = await User.create({
     name: name.trim(),
     email: email.toLowerCase(),
@@ -141,6 +143,7 @@ export const register = async ({ name, email, phone, password, role, driverDetai
     role: safeRole,
     emailVerified: false,
     authProvider: 'local',
+    isApproved: safeRole === 'driver' ? false : true,
     driverDetails: safeDriverDetails,
   });
 

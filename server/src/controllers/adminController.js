@@ -68,6 +68,17 @@ export const drivers = asyncHandler(async (req, res) => {
   res.json({ drivers });
 });
 
+// PATCH /api/admin/drivers/:id/approve { approved: boolean }
+export const approveDriver = asyncHandler(async (req, res) => {
+  const driver = await User.findOneAndUpdate(
+    { _id: req.params.id, role: 'driver' },
+    { isApproved: req.body.approved !== false },
+    { new: true }
+  ).select('-password');
+  if (!driver) return res.status(404).json({ message: 'Driver not found' });
+  res.json({ driver });
+});
+
 // PATCH /api/admin/rides/:id/driver { driverId } - assign a driver to a ride,
 // or { driverId: null } to remove the assigned driver and return to the board.
 export const assignDriver = asyncHandler(async (req, res) => {

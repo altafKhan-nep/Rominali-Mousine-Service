@@ -10,5 +10,7 @@ export const adminSettings = () => api.get('/admin/settings');
 export const adminUpdateSettings = (payload) => api.patch('/admin/settings', payload);
 export const adminAssignDriver = (rideId, driverId) =>
   api.patch(`/admin/rides/${rideId}/driver`, { driverId });
+export const adminApproveDriver = (id, approved) =>
+  api.patch(`/admin/drivers/${id}/approve`, { approved });
 
 export default { adminUsers, adminSuspendUser, adminUnsuspendUser, adminDeleteUser, adminPayments, adminSettings, adminUpdateSettings, adminAssignDriver };

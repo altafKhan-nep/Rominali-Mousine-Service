@@ -14,6 +14,7 @@ import {
   adminSettings,
   adminUpdateSettings,
   adminAssignDriver,
+  adminApproveDriver,
 } from '../../services/adminService.js';
 import { onRideUpdate, offRideUpdate, onRideNew, offRideNew } from '../../services/socketService.js';
 import { Spinner } from '../../components/ui/Spinner.jsx';
@@ -204,6 +205,19 @@ export default function Dashboard() {
     }
   };
 
+  const approveDriver = async (d) => {
+    setBusy(d._id);
+    try {
+      await adminApproveDriver(d._id, !d.isApproved);
+      setError('');
+      await load();
+    } catch (err) {
+      setError(err.response?.data?.message || 'Could not update driver');
+    } finally {
+      setBusy('');
+    }
+  };
+
   const card = 'rounded-2xl border border-slate-200 bg-white p-5 shadow-sm';
 
   return (
@@ -367,17 +381,35 @@ export default function Dashboard() {
                 </div>
                 <span
                   className={`ml-auto rounded-full px-2.5 py-1 text-xs font-medium ${
-                    d.driverDetails?.isAvailable
-                      ? 'bg-brand-50 text-brand-700'
-                      : 'bg-slate-100 text-slate-500'
+                    d.isApproved
+                      ? 'bg-green-50 text-green-700'
+                      : 'bg-amber-50 text-amber-700'
                   }`}
                 >
-                  {d.driverDetails?.isAvailable ? 'Online' : 'Offline'}
+                  {d.isApproved ? 'Approved' : 'Pending'}
                 </span>
               </div>
-              <p className="mt-3 text-xs text-muted">
-                {vehicleLabel(d.driverDetails?.vehicleType)} · {d.driverDetails?.plateNumber || 'No plate'}
-              </p>
+              <div className="mt-3 space-y-1 text-xs text-muted">
+                <p>
+                  <span className="font-medium text-ink">{vehicleLabel(d.driverDetails?.vehicleType)}</span>
+                  {d.driverDetails?.vehicleName ? ` · ${d.driverDetails.vehicleName}` : ''}
+                </p>
+                <p>Plate: {d.driverDetails?.plateNumber || '—'} · License: {d.driverDetails?.licenseNo || '—'}</p>
+                <p className={d.driverDetails?.isAvailable ? 'text-brand-600' : ''}>
+                  {d.driverDetails?.isAvailable ? 'Online' : 'Offline'}
+                </p>
+              </div>
+              <div className="mt-3 border-t border-slate-100 pt-3">
+                <Button
+                  size="sm"
+                  variant={d.isApproved ? 'outline' : 'primary'}
+                  loading={busy === d._id}
+                  onClick={() => approveDriver(d)}
+                  className="w-full"
+                >
+                  {d.isApproved ? 'Revoke approval' : 'Approve driver'}
+                </Button>
+              </div>
             </div>
           ))}
         </div>

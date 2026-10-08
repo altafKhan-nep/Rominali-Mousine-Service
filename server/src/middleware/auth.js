@@ -50,3 +50,16 @@ export const requirePerm = (perm) => (req, res, next) => {
   if (perms.includes('*') || perms.includes(perm) || perms.includes(perm.split(':')[0] + ':*')) return next();
   return res.status(403).json({ message: `Forbidden: need ${perm}` });
 };
+
+// Drivers must be admin-approved before they can work (go online, accept rides,
+// share location). Passengers/admins are unaffected.
+export const requireApprovedDriver = (req, res, next) => {
+  if (req.user?.role !== 'driver') return next();
+  if (!req.user?.isApproved) {
+    return res.status(403).json({
+      message: 'Your driver account is awaiting admin approval.',
+      code: 'DRIVER_NOT_APPROVED',
+    });
+  }
+  return next();
+};

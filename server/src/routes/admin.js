@@ -12,6 +12,7 @@ router.patch('/rides/:id/driver', admin.assignDriver);
 router.patch('/rides/:id', admin.updateRide);
 router.get('/drivers', admin.drivers);
 router.patch('/drivers/:id', admin.toggleDriver);
+router.patch('/drivers/:id/approve', admin.approveDriver);
 router.get('/users', admin.users);
 router.post('/users', admin.createUser);
 router.patch('/users/:id/suspend', admin.suspendUser);

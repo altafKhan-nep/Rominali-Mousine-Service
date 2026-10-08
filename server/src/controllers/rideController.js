@@ -10,22 +10,14 @@ export const createRide = asyncHandler(async (req, res) => {
   const ride = await rideService.createRide(req.user._id, req.body);
   const io = ioOf(req);
 
-  // Notify nearby, available drivers — progressive radius, service area MD/DC/VA
-  let nearby = await rideService.findNearbyDrivers({
+  // Notify nearby, available drivers registered for THIS vehicle — progressive radius.
+  // Vehicle-matched only: an SUV request never reaches a Chevrolet driver and vice-versa.
+  const nearby = await rideService.findNearbyDrivers({
     lat: ride.pickup.lat,
     lng: ride.pickup.lng,
     radius: rideService.NOTIFY_RADIUS_M,
     vehicleType: ride.vehicleType,
   });
-  // If no nearby drivers, still notify all available drivers in service area
-  if (nearby.length === 0) {
-    const allAvailable = await rideService.findNearbyDrivers({
-      lat: ride.pickup.lat,
-      lng: ride.pickup.lng,
-      radius: 100000, // 100km covers MD/DC/VA
-    });
-    nearby = allAvailable;
-  }
   for (const driver of nearby) {
     io.to(`user:${driver._id}`).emit('ride:new', { ride });
   }

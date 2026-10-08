@@ -19,6 +19,8 @@ const userSchema = new mongoose.Schema(
     avatar: { type: String, default: '' },
     emailVerified: { type: Boolean, default: false },
     isSuspended: { type: Boolean, default: false },
+    // Drivers must be approved by an admin before they can go online / receive rides.
+    isApproved: { type: Boolean, default: false },
     // Web-push subscriptions (endpoint + VAPID keys) for browser notifications
     pushSubscriptions: [
       {
@@ -47,6 +49,8 @@ const userSchema = new mongoose.Schema(
           'economy-suv',
           'premium-suv',
           'luxury-suv',
+          'SUV',
+          'Chevrolet',
           'van',
           'mini-coach',
           'school-bus',
@@ -56,6 +60,8 @@ const userSchema = new mongoose.Schema(
       },
       plateNumber: { type: String, default: '' },
       licenseNo: { type: String, default: '' },
+      // Free-text vehicle model/name (e.g. "Chevrolet Suburban") shown to admin.
+      vehicleName: { type: String, default: '' },
       isAvailable: { type: Boolean, default: false },
       // Uber-like driver metrics
       stats: {

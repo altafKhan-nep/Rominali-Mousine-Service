@@ -337,6 +337,27 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ============ COMPANY FLEET BAND ============ */}
+      <section className="overflow-hidden bg-navy-950">
+        <img
+          src="/images/company-fleet.jpg"
+          alt={`${BRAND_NAME} passenger vehicle with company details`}
+          className="block h-auto w-full"
+          loading="lazy"
+        />
+        <div className="pointer-events-none h-px w-full bg-gradient-to-r from-transparent via-gold-400/40 to-transparent" />
+        <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-3 px-4 py-10 text-center sm:px-6 sm:py-12">
+          <span className="rounded-full border border-gold-400/40 bg-white/5 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-gold-300">
+            Our fleet, our signature
+          </span>
+          <h2 className="text-2xl font-bold text-white sm:text-3xl">{BRAND_NAME}</h2>
+          <p className="max-w-2xl text-sm leading-relaxed text-white/80 sm:text-base">
+            Late-model vehicles detailed before every dispatch — polished to a flawless standard
+            and carrying our signature company mark across Maryland, Virginia and Washington DC.
+          </p>
+        </div>
+      </section>
+
       {/* ============ FEATURED SERVICES ============ */}
       <section className="bg-brand-gradient-soft py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">

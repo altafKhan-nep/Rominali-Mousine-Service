@@ -24,6 +24,8 @@ const rideSchema = new mongoose.Schema(
         'economy-suv',
         'premium-suv',
         'luxury-suv',
+        'SUV',
+        'Chevrolet',
         'van',
         'mini-coach',
         'school-bus',

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { CheckCircle2, Phone, Clock, MapPin } from 'lucide-react';
 import PageHero from '../../components/marketing/PageHero.jsx';
 import Section from '../../components/marketing/Section.jsx';
+import api from '../../services/api.js';
 import { SERVICES } from '../../data/services.js';
 import { EMAIL, PHONE_TEL, PHONE_DISPLAY, PHONE_ALT_TEL, PHONE_ALT_DISPLAY, WHATSAPP } from '../../data/site.js';
 
@@ -19,17 +20,32 @@ export default function Contact() {
     message: '',
   });
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState('');
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`Quote request — ${form.service || 'General'}`);
-    const body = encodeURIComponent(
-      `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\nService: ${form.service}\nPreferred date: ${form.date}\n\nMessage:\n${form.message}`
-    );
-    window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
-    setSent(true);
+    setSending(true);
+    setError('');
+    try {
+      await api.post('/contact/quote', form);
+      setSent(true);
+    } catch (err) {
+      const detail = err.response?.data?.message;
+      if (detail) setError(detail);
+      else {
+        const subject = encodeURIComponent(`Quote request — ${form.service || 'General'}`);
+        const body = encodeURIComponent(
+          `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\nService: ${form.service}\nPreferred date: ${form.date}\n\nMessage:\n${form.message}`
+        );
+        window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
+        setSent(true);
+      }
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -56,10 +72,10 @@ export default function Contact() {
                   <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-white">
                     <CheckCircle2 className="h-8 w-8 text-brand-600" />
                   </div>
-                  <h3 className="mt-2 text-lg font-bold text-brand-900">Almost there!</h3>
+                  <h3 className="mt-2 text-lg font-bold text-brand-900">Request sent!</h3>
                   <p className="mt-2 text-sm text-brand-950/70">
-                    Your email app should have opened with your request. Send it and we will be in
-                    touch shortly. Prefer to talk now?
+                    Your free quote request has been delivered straight to our dispatch team.
+                    We'll be in touch shortly. Prefer to talk now?
                   </p>
                   <a
                     href={PHONE_TEL}
@@ -71,6 +87,11 @@ export default function Contact() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+                  {error && (
+                    <p className="rounded-xl bg-red-50 px-4 py-2.5 text-sm text-red-700">
+                      {error}
+                    </p>
+                  )}
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div>
                       <label className="mb-1.5 block text-sm font-medium text-ink" htmlFor="c-name">Full name</label>
@@ -107,9 +128,10 @@ export default function Contact() {
                   </div>
                   <button
                     type="submit"
-                    className="btn-brand-gradient w-full rounded-full px-6 py-3.5 text-base font-semibold text-white shadow-md transition-opacity hover:opacity-90"
+                    disabled={sending}
+                    className="btn-brand-gradient w-full rounded-full px-6 py-3.5 text-base font-semibold text-white shadow-md transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    Request my free quote
+                    {sending ? 'Sending…' : 'Request my free quote'}
                   </button>
                 </form>
               )}

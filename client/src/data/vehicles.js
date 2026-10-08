@@ -16,3 +16,10 @@ export const VEHICLES = [
 
 export const vehicleLabel = (id) =>
   VEHICLES.find((v) => v.id === id)?.label || (id || '').replace(/-/g, ' ');
+
+// The only two vehicles a passenger can book. Drivers register against one of
+// these, and ride requests are routed to matching drivers only.
+export const BOOKING_VEHICLES = [
+  { id: 'SUV', label: 'SUV', desc: 'Premium sport-utility vehicle' },
+  { id: 'Chevrolet', label: 'Chevrolet', desc: 'Chevrolet SUV' },
+];
